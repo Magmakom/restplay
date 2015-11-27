@@ -1,0 +1,197 @@
+// Color variables (appears count calculates by raw css)
+@color0: #7f7f7f; // Appears 2 times
+@color1: #333333; // Appears 2 times
+@color2: #ffffff; // Appears 2 times
+@color3: #eeeeee; // Appears 2 times
+@color4: #dcdcdc; // Appears 2 times
+
+// Width variables (appears count calculates by raw css)
+@width1: 100%; // Appears 10 times
+
+// Height variables (appears count calculates by raw css)
+@height2: 100%; // Appears 9 times
+
+.fill {
+    height:@height2;
+    min-height: @height2;
+}
+html {
+    height:@height2;
+    min-height: @height2;
+}
+body {
+    height:@height2;
+    min-height: @height2;
+}
+.outer-container {
+    box-sizing: border-box;
+    margin-left: 0;
+    margin-right: 0;
+    padding-top:50px;
+}
+div#main_container {
+    height:@height2;
+    width:@width1;
+}
+div#map_container {
+    height:@height2;
+    width:@width1;
+}
+div#info_container {
+    height:@height2;
+    width:@width1;
+}
+.navbar {
+    border: 1px solid transparent;
+    height: 50px;
+    left:0;
+    margin-bottom: 0;
+    position: absolute;
+    top: 0;
+    width:@width1;
+}
+.navbar-brand {
+    padding: 10px;
+}
+.navbar-right {
+    margin-right: 0px;
+    padding-right: 0px;
+}
+.col-md-10 {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.col-md-2 {
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+}
+#input-search {
+    margin-right: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    width: @width1;
+}
+.glyphicon-search {
+    padding-bottom: 3px;
+    padding-top: 7px;
+    top: 0px;
+}
+.list-group {
+    margin-right: 0px;
+    margin-top: 5px;
+    padding-left: 0px;
+    padding-right: 0px;
+    width: @width1;
+}
+.list-group-item {
+    padding-bottom: 6px;
+    padding-top: 6px;
+}
+.badge {
+    background-color:#669900;
+}
+.rightItem {
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.restName {
+    border-bottom: 1px solid @color3;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    padding-bottom:5px;
+    padding-left: 20px;
+    padding-top:20px;
+    text-align: center;
+}
+#input-login {
+    border: 1px solid @color4;
+    margin-right: 0px;
+    padding-bottom: 0;
+    padding-left: 4px;
+    padding-right: 0px;
+    padding-top: 0;
+    padding-top:20px;
+    width: @width1;
+    width: @width1;
+}
+#input-password {
+    border: 1px solid @color4;
+    margin-right: 0px;
+    margin-top: 10px;
+    padding-bottom: 0;
+    padding-left: 4px;
+    padding-right: 0px;
+    padding-top: 0;
+    padding-top:20px;
+    width: @width1;
+    width: @width1;
+}
+#loginConfirm {
+    background: #00a8fd;
+    border-radius: 3px;
+    color: @color2;
+    float: right;
+    margin-top: 20px;
+    padding: 12px 20px;
+}
+.info {
+    background: #e5e5e5;
+    border-radius: 50%;
+    display: inline-block;
+    height: 20px;
+    line-height: 20px;
+    margin-top: 30px;
+    margin: 0 10px 0 0;
+    text-align: center;
+    width: 20px;
+}
+.overlay {
+    background:transparent url(/images/overlay.png) repeat top left;
+    bottom:0px;
+    left:0px;
+    position:fixed;
+    right:0px;
+    top:0px;
+    z-index:100;
+}
+.box {
+    -khtml-border-radius:20px;
+    -moz-border-radius: 20px;
+    -moz-box-shadow: 0 1px 5px @color1;
+    -webkit-border-radius:20px;
+    -webkit-box-shadow: 0 1px 5px @color1;
+    background-color:@color2;
+    color:@color0;
+    left:40%;
+    padding:20px;
+    position:fixed;
+    right:40%;
+    top:-400px;
+    z-index:101;
+    h1 {
+        -khtml-border-top-left-radius: 20px;
+        -khtml-border-top-right-radius: 20px;
+        -moz-border-radius:20px 20px 0px 0px;
+        -webkit-border-top-left-radius: 20px;
+        -webkit-border-top-right-radius: 20px;
+        background-color:@color3;
+        border-bottom: 1px solid @color0;
+        color:#000000;
+        margin:-20px -20px 20px -20px;
+        padding:10px;
+        text-align: center;
+    }
+}
+a.boxclose {
+    color: #aaaaaa;
+    cursor: pointer;
+    font-size: 22px;
+    font-weight: bold;
+    line-height: .5;
+    position: absolute;
+    right: 11px;
+    text-decoration: none;
+    text-shadow: 0 -1px 1px rbga(0,0,0,.6);
+    top: 8px;
+}

@@ -11,7 +11,7 @@ case class Restaurant(
   positionLng: Double
 )
 
-object  Restaurant {
+object Restaurant{
 
   import play.api.libs.json._
   import play.api.libs.functional.syntax._

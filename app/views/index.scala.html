@@ -6,6 +6,12 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="css/main.css">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react-dom.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+        <script type="text/babel" src="js/react-main.js"></script>
+
         </head>
     <body>
         <nav class="navbar navbar-default navbar-static-top">
@@ -101,10 +107,12 @@
             <div class="col-md-2">
                 <div class="input-group input-group-sm" id="input-search">
                     <span id="sizing-addon3" class="input-group-addon glyphicon glyphicon-search" aria-hidden="true" style="top: 0px; padding-top: 7px; padding-bottom: 3px;"></span>
-                    <input type="text" class="form-control" id="search" placeholder="Search for..." aria-describedby="sizing-addon3" onkeyup="updateList()">
+                    <input type="text" class="form-control" id="search" placeholder="Search for..." aria-describedby="sizing-addon3">
                     </div>
                 <ul class="list-group" id="list">
                     </ul>
+
+                    <div id="restaurant-list"></div>
                 </div>
             </div>
         <script src="http://code.jquery.com/jquery.js"></script>
