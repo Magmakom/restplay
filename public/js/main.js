@@ -131,6 +131,7 @@ function getContent(obj) {
 }
 
 function updateList() {
+    return
     if (updatelistTimer !== null) {
         clearTimeout(updatelistTimer);
     }

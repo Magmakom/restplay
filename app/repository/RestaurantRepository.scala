@@ -27,9 +27,9 @@ trait RestaurantRepository {
      one[Restaurant]
   }
 
-  def getNameById(id:  String): Future[Option[String]] ={
-    
-  }
+  // def getNameById(id:  String): Future[Option[String]] ={
+  //
+  // }
 
   def findByName(name:  String): Future[List[Restaurant]] = {
     val query = BSONDocument(
