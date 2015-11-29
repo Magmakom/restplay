@@ -1,11 +1,11 @@
 package repository
 
 import scala.concurrent.ExecutionContext.Implicits.global
-
-import play.api.inject.ApplicationLifecycle
-import play.api.Play.current
 import scala.concurrent.Future
 import scala.util.{ Success, Failure }
+
+import play.api.Play.current
+import play.api.inject.ApplicationLifecycle
 import reactivemongo.api._
 
 object MongoEnv{

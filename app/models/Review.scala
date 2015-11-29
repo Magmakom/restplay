@@ -1,6 +1,5 @@
 package models
 
-
 import org.joda.time.DateTime
 
 case class Review(
@@ -13,10 +12,8 @@ case class Review(
   title: String,
   content: String,
   creationDate: Option[DateTime],
-  updateDate: Option[DateTime])
-  {
-    println("Hi! I'm a little review")
-  }
+  updateDate: Option[DateTime]
+)
 
 object Review{
 
@@ -35,7 +32,6 @@ object Review{
       "content" -> o.content,
       "creationDate" -> o.creationDate,
       "updateDate" -> o.updateDate
-
     )
   }
 
@@ -60,27 +56,6 @@ object Review{
   // }
 
   implicit object  ReviewReader extends BSONDocumentReader[Review] {
-    // def read(doc: BSONDocument): Review = {
-    //   val opt: Option[Review] = for {
-    //     id <- doc.getAs[BSONObjectID]("_id").map(_.stringify)
-    //     restaurantId <- doc.getAs[BSONObjectID]("restaurantId").map(_.stringify)
-    //     cuisine <- doc.getAs[BSONNumberLike]("cuisine").map(_.toInt)
-    //     interior <- doc.getAs[BSONNumberLike]("interior").map(_.toInt)
-    //     service <- doc.getAs[BSONNumberLike]("service").map(_.toInt)
-    //     resultMark <- doc.getAs[Double]("resultMark").map(_.toDouble)
-    //     title <- doc.getAs[String]("title")
-    //     content <- doc.getAs[String]("content")
-    //     creationDate <- doc.getAs[BSONDateTime]("creationDate").map(dt => new DateTime(dt.value))
-    //     updateDate <- doc.getAs[BSONDateTime]("updateDate").map(dt => new DateTime(dt.value))
-    //   } yield new Review( Some(id), restaurantId, cuisine, interior, service, Some(resultMark), title, content, Some(creationDate), Some(updateDate)
-    //   )
-    //   opt match {
-    //     case Some(_) => opt.get
-    //     case None => {
-    //       println("ALLO YOBA PSHHHH PSHHHHHHHHHH")
-    //       opt.get
-    //     }
-    //   }
       def read(doc: BSONDocument): Review =
         new Review(
           doc.getAs[BSONObjectID]("_id").map(_.stringify),
@@ -96,17 +71,12 @@ object Review{
         )
     }
 
-
   import play.api.data._
   import play.api.data.format.Formats._
   import play.api.data.Forms._
 
   val form = Form(
     mapping(
-      // "id" -> optional(of[String] verifying pattern(
-      // """[a-fA-F0-9]{24}""".r,
-      // "constraint.objectId",
-      // "error.objectId")),
       "id" -> optional(text),
       "restaurantId" -> nonEmptyText,
       "cuisine" -> number,
