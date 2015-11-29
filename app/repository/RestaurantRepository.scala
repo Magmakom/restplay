@@ -3,10 +3,8 @@ package repository
 import scala.concurrent.Future
 
 import play.api.libs.concurrent.Execution.Implicits._
-import play.api.libs.json._
 import reactivemongo.api._
-import reactivemongo.bson.BSONDocument
-import reactivemongo.bson.BSONObjectID
+import reactivemongo.bson._
 
 import models.Restaurant
 

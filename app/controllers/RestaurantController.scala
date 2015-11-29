@@ -17,7 +17,7 @@ class RestaurantController extends Controller {
   def findAllAsJson = Action.async { request =>
     RestaurantRepository.findAll().map { result =>
         Ok(Json.toJson(result))
+    }
   }
-}
 
 }

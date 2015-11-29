@@ -8,7 +8,7 @@ import scala.concurrent.Future
 import scala.util.{ Success, Failure }
 import reactivemongo.api._
 
-object MongoEnv {
+object MongoEnv{
 
   lazy val db = {
     val uri = current.configuration.getString("mongodb.uri")
@@ -27,8 +27,6 @@ object MongoEnv {
       db
     }
   }
-
-  // def apply(name: String): BSONCollection = db(name)
 
   private def registerDriverShutdownHook(mongoDriver: MongoDriver): MongoDriver = {
     current.injector.instanceOf[ApplicationLifecycle].

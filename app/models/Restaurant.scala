@@ -9,7 +9,10 @@ case class Restaurant(
   workingHours: String,
   positionLat: Double,
   positionLng: Double
-)
+){
+      println("Hi! I'm a little restaurant"+ id) 
+
+}
 
 object Restaurant{
 

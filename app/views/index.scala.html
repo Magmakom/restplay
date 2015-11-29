@@ -6,24 +6,21 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="stylesheets/main.css">
-
-
-
-        </head>
+    </head>
     <body>
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="#">
-                        <img alt="Brand" src="/images/logo.png" height="30px" width="30px">
-                        </a>
-                    </div>
+                        <img class="logo" alt="Brand" src="/images/logo.png">
+                    </a>
+                </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li class="active" id="mapButton" onclick="openMapPage()"><a href="#">Map<span class="sr-only">(current)</span></a></li>
                         <li id="ratingButton"><a href="#">Rating</a></li>
                         <li id="aboutButton"><a href="#">About us</a></li>
-                        </ul>
+                    </ul>
                     <form class="navbar-form navbar-right">
                         <a type="button" href="#signin" class="btn btn-default" id="signIn">Sign in</a>
                         <div class="overlay" id="overlay" style="display:none;"></div>
@@ -35,36 +32,35 @@
                                 <input type="text" class="form-control" id="input-password" placeholder="Password..." aria-describedby="sizing-addon3">
                                 <a type="button" href="#login" class="btn btn-default" id="loginConfirm">Sign in</a>
                                 <p><span class="info">?</span><a href="#">Forgot Password</a></p>
-                                </div>
                             </div>
-                        </form>
-                    </div><!-- /.navbar-collapse -->
-                </div><!-- /.container-fluid -->
-            </nav>
+                        </div>
+                    </form>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
         <div class="row fill outer-container">
             <div class="col-md-10 fill">
                 <div id="main_container">
-                    <div id="map_container">
-                        </div>
+                    <div id="map_container"></div>
                     <div id="info_container" style="padding-left: 20px; margin-top: 0px; margin-bottom: 0px;">
                         <h1 class="restName">Restaurant name</h1>
                         <div class="row" style="padding-top: 30px">
                             <div class="col-sm-3">
                                 <a href="#" class="thumbnail">
                                     <img src="/images/no-thumbnail.png" alt="...">
-                                    </a>
+                                </a>
                                 <a href="#" class="thumbnail">
                                     <img src="/images/no-thumbnail.png" alt="...">
-                                    </a>
-                                </div>
+                                </a>
+                            </div>
                             <div class="col-sm-3">
                                 <a href="#" class="thumbnail">
                                     <img src="/images/no-thumbnail.png" alt="...">
                                     </a>
                                 <a href="#" class="thumbnail">
                                     <img src="/images/no-thumbnail.png" alt="...">
-                                    </a>
-                                </div>
+                                </a>
+                            </div>
                             <div class="col-sm-3">
                                 <div class="container" style="width: 100%;">
                                     <div class="jumbotron" id="restInfo" style="margin-top: 0px; margin-bottom: 0px; padding-top: 5px; padding-bottom:5px; padding-left: 20px; padding-right: 20px; font-size: 14px;">
@@ -79,47 +75,45 @@
                                         Cuisine
                                         <span class="rightItem" id="rateCuisine">5/5</span>
                                         <p></p>
-                                        </li>
+                                    </li>
                                     <li>
                                         Interior
                                         <span class="rightItem" id="rateInterior">5/5</span>
                                         <p></p>
-                                        </li>
+                                    </li>
                                     <li>
                                         Service
                                         <span class="rightItem" id="rateService">5/5</span>
                                         <p></p>
-                                        </li>
-                                    </ul>
-                                </div>
+                                    </li>
+                                </ul>
                             </div>
+                        </div>
                         <div class="container" style="width: 100%; padding-left: 0px; padding-right: 0px;">
                             <div class="jumbotron" id="restView" style="margin-top: 0px; margin-bottom: 0px; padding-top: 0px; padding-bottom: 0px; padding-left: 0px; padding-right: 0px; font-size: 14px; text-indent: 20px;">
                                 The developers and managers at DataArt have done an excellent job of enhancing the functionality of Cruiselabs platform, maintaining legacy systems, operating over 70 web sites and enabling our flagship web sites for mobile devices. They have freed us to focus on growing the business rather than worrying about our technology. DataArt started with very little expertise in cruise technology, but, now are experts in the domain and regularly add value to Cruiselabs' customer experience as a result.
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
             <div class="col-md-2">
                 <div class="input-group input-group-sm" id="input-search">
                     <span id="sizing-addon3" class="input-group-addon glyphicon glyphicon-search" aria-hidden="true" style="top: 0px; padding-top: 7px; padding-bottom: 3px;"></span>
                     <input type="text" class="form-control" id="search" placeholder="Search for..." aria-describedby="sizing-addon3">
-                    </div>
-                <ul class="list-group" id="list">
-                    </ul>
-
-                    <div id="restaurant-list"></div>
                 </div>
+                <ul class="list-group" id="list"></ul>
+                <div id="restaurant-list"></div>
             </div>
-        <script src="http://code.jquery.com/jquery.js"></script>
+        </div>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-json/2.5.1/jquery.json.min.js"></script>
         <script src="http://maps.googleapis.com/maps/api/js"></script>
         <script src="js/main.js"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react.js"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react-dom.js"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
-                <script type="text/babel" src="js/react-main.js"></script>
-        </body>
-    </html>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react-dom.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+        <script type="text/babel" src="js/react-main.js"></script>
+    </body>
+</html>
