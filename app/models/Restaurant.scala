@@ -44,7 +44,8 @@ object Restaurant{
       "address" -> o.address,
       "workingHours" -> o.workingHours,
       "lat" -> o.positionLat,
-      "lng" -> o.positionLng)
+      "lng" -> o.positionLng
+    )
   }
 
   implicit object RestaurantReader extends BSONDocumentReader[Restaurant] {

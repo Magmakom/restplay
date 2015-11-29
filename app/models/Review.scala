@@ -20,7 +20,7 @@ object Review{
   import play.api.libs.json._
   import play.api.libs.functional.syntax._
 
-  implicit val restaurantWrites = new Writes[Review] {
+  implicit val reviewWrites = new Writes[Review] {
     def writes(o: Review) = Json.obj(
       "id" -> o.id,
       "restaurantId" -> o.restaurantId,
@@ -35,25 +35,49 @@ object Review{
     )
   }
 
+  implicit  val reviewReads = new Reads[Review] {
+    def reads(json: JsValue): JsResult[Review] = json match {
+      case obj: JsObject => try {
+        val id = (obj \ "_id").asOpt[String]
+        val restaurantId = (obj \ "restaurantId").as[String]
+        val cuisine = (obj \ "cuisine").as[Int]
+        val interior = (obj \ "interior").as[Int]
+        val service = (obj \ "service").as[Int]
+        val resultMark = (obj \ "resultMark").asOpt[Double]
+        val title = (obj \ "title").as[String]
+        val content = (obj \ "content").as[String]
+        val creationDate = (obj \ "creationDate").asOpt[Long]
+        val updateDate = (obj \ "updateDate").asOpt[Long]
+        JsSuccess(Review(id, restaurantId, cuisine, interior, service, resultMark, title, content,
+          creationDate.map(new DateTime(_)),
+          updateDate.map(new DateTime(_))))
+      } catch {
+        case cause: Throwable => JsError(cause.getMessage)
+      }
+      case _ => JsError("expected.jsobject")
+    }
+  }
+
   import reactivemongo.bson._
 
-  // implicit object ReviewWriter extends BSONDocumentWriter[Review] {
-  //   def write(o: Review): BSONDocument = BSONDocument(
-  //     if (o.id.isDefined) {
-  //       "_id" -> BSONObjectID(o.id.get)
-  //     } else {
-  //       "_id" -> BSONObjectID.generate
-  //     },
-  //     "restaurantId" -> BSONObjectID(o.restaurantId),
-  //     "cuisine" -> o.cuisine,
-  //     "interior" -> o.interior,
-  //     "service" -> o.service,
-  //     "resultMark" -> o.resultMark,
-  //     "title " -> o.title,
-  //     "content" -> o.content,
-  //     "creationDate" -> o.creationDate,
-  //     "updateDate" -> o.updateDate)
-  // }
+  implicit object ReviewWriter extends BSONDocumentWriter[Review] {
+    def write(o: Review): BSONDocument = BSONDocument(
+      if (o.id.isDefined) {
+        "_id" -> BSONObjectID(o.id.get)
+      } else {
+        "_id" -> BSONObjectID.generate
+      },
+      "restaurantId" -> BSONObjectID(o.restaurantId),
+      "cuisine" -> o.cuisine,
+      "interior" -> o.interior,
+      "service" -> o.service,
+      "resultMark" -> o.resultMark,
+      "title " -> o.title,
+      "content" -> o.content,
+      "creationDate" -> o.creationDate.map(date => BSONDateTime(date.getMillis)),
+      "updateDate" -> o.updateDate.map(date => BSONDateTime(date.getMillis))
+    )
+  }
 
   implicit object  ReviewReader extends BSONDocumentReader[Review] {
       def read(doc: BSONDocument): Review =

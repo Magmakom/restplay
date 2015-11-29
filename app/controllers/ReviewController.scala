@@ -9,7 +9,7 @@ import play.api.libs.json.Json
 import play.api.Play.current
 import play.api.i18n.Messages.Implicits._
 
-import  models.Review
+import models.Review
 import repository.ReviewRepository
 
 class ReviewController extends Controller {
