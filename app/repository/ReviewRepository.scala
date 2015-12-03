@@ -13,7 +13,7 @@ object ReviewRepository
   extends JsonDao[Review, BSONObjectID](MongoEnv.db, "reviews") {
 
   def findById(id: String): Future[Option[Review]] = {
-    ReviewRepository.findById(BSONObjectID(id))
+    findById(BSONObjectID(id))
   }
 
 
