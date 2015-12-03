@@ -2,39 +2,30 @@ package repository
 
 import scala.concurrent.Future
 
+import reactivemongo.bson.BSONObjectID
+import reactivemongo.extensions.json.dao.JsonDao
 import play.api.libs.concurrent.Execution.Implicits._
-import reactivemongo.api._
-import reactivemongo.bson._
+import play.modules.reactivemongo.json.BSONFormats._
 
 import models.Restaurant
 
-object RestaurantRepository extends RestaurantRepository
-
-trait RestaurantRepository {
-
-  def collection = MongoEnv.db("restaurants")
-
-  def findAll(): Future[List[Restaurant]] ={
-    collection.find(BSONDocument()).
-      cursor[Restaurant].
-      collect[List](25)
-  }
+object RestaurantRepository
+  extends JsonDao[Restaurant, BSONObjectID](MongoEnv.db, "restaurants"){
 
   def findById(id: String): Future[Option[Restaurant]] = {
-    collection.find(BSONDocument("_id" -> BSONObjectID(id))).
-     one[Restaurant]
+    RestaurantRepository.findById(BSONObjectID(id))
   }
 
   // def getNameById(id:  String): Future[Option[String]] ={
   //
   // }
 
-  def findByName(name:  String): Future[List[Restaurant]] = {
-    val query = BSONDocument(
-      "name" -> BSONDocument(
-        "$regexp" -> name))
-    collection.find(query).
-      cursor[Restaurant].
-      collect[List](25)
-  }
+  // def findByName(name:  String): Future[List[Restaurant]] = {
+  //   val query = BSONDocument(
+  //     "name" -> BSONDocument(
+  //       "$regexp" -> name))
+  //   collection.find(query).
+  //     cursor[Restaurant].
+  //     collect[List](25)
+  // }
 }
