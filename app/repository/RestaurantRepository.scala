@@ -21,5 +21,4 @@ object RestaurantRepository
       findAll(selector = "name" $regex (name, "i"))
   }
 
-
 }
