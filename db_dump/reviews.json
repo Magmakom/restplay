@@ -1,6 +1,6 @@
-{
+[{
 	"_id": {
-		"$oid": "561a86597b1d8a1363b890a1"
+		"$oid": "566626422800002800c15ef9"
 	},
 	"content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 	"creationDate": {
@@ -17,4 +17,64 @@
 	"updateDate": {
 		"$numberLong": "1448576955457"
 	}
-}
+},
+{
+	"_id": {
+		"$oid": "566625ff2800002800c15ef6"
+	},
+	"content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+	"creationDate": {
+		"$numberLong": "1448576955466"
+	},
+	"cuisine": 4,
+	"interior": 2,
+	"restaurantId": {
+		"$oid": "561a86597b1d8a1363b890b9"
+	},
+	"resultMark": 4.3,
+	"service": 5,
+	"title": "Lorem Ipsum",
+	"updateDate": {
+		"$numberLong": "1448576955457"
+	}
+},
+{
+	"_id": {
+		"$oid": "566626122800002800c15ef7"
+	},
+	"content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+	"creationDate": {
+		"$numberLong": "1448576955456"
+	},
+	"cuisine": 4,
+	"interior": 3,
+	"restaurantId": {
+		"$oid": "5624c28b4e271267b4a6ffd2"
+	},
+	"resultMark": 4.3,
+	"service": 5,
+	"title": "Lorem Ipsum",
+	"updateDate": {
+		"$numberLong": "1448576955457"
+	}
+},
+{
+	"_id": {
+		"$oid": "566626262800002800c15ef8"
+	},
+	"content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+	"creationDate": {
+		"$numberLong": "1448576955456"
+	},
+	"cuisine": 4,
+	"interior": 1,
+	"restaurantId": {
+		"$oid": "561c12f0ca43e460afd3223c"
+	},
+	"resultMark": 4.3,
+	"service": 5,
+	"title": "Lorem Ipsum",
+	"updateDate": {
+		"$numberLong": "1448576955457"
+	}
+}]
