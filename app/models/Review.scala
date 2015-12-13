@@ -21,7 +21,6 @@ object Review{
   import play.api.libs.json.Json
   import play.modules.reactivemongo.json.BSONFormats._
 
-
   implicit val restaurantFormat = Json.format[Review]
 
   import play.api.data._
