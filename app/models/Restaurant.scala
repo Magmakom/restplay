@@ -20,4 +20,22 @@ object Restaurant{
 
   implicit val restaurantFormat = Json.format[Restaurant]
 
+  import play.api.data._
+  import play.api.data.format.Formats._
+  import play.api.data.Forms._
+  import helpers.BSONObjectIDHelper.BSONObjectIDFormFormat
+
+  val form = Form(
+    mapping(
+      "id" -> of[BSONObjectID],
+      "name" -> text,
+      "telephone" -> text,
+      "description" -> text,
+      "address" -> text,
+      "workingHours" -> text,
+      "lat" -> of[Double],
+      "lng" -> of[Double]
+    )(Restaurant.apply)(Restaurant.unapply)
+  )
+
 }

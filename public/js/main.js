@@ -76,18 +76,14 @@ function getRestaurantsByName() {
 
 function initMap() {
     mode = "map";
-    document.getElementById("info_container").style.visibility = "hidden";
-    document.getElementById("info_container").style.display = "none";
-    myOptions = {
-        streetViewControl: false,
-        zoom: 14,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    map = new google.maps.Map(document.getElementById("map_container"), myOptions);
+    $('#info_box').css("visibility", "hidden");
+    $('#info_box').css("display", "none");
+    $('#info_container').css("visibility", "hidden");
+    $('#info_container').css("display", "none");
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
             if (position == null) {
-                position = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                position = L.latLng(position.coords.latitude, position.coords.longitude);
             }
         });
     } else {
@@ -95,39 +91,33 @@ function initMap() {
         // handleLocationError(false, infoWindow, map.getCenter());
     }
     if (position == null) {
-        position = new google.maps.LatLng(46.475406, 30.734472);
+        position = L.latLng(46.475406, 30.734472);
     }
-    ;
-    map.setCenter(position);
+    map = new L.Map("map", {
+        center: position,
+        zoom: 14,
+        zoomAnimation: false
+    });
+    var dgis = new L.DGis();
+    map.addLayer(dgis);
     isOpened = false;
     getMarks();
 }
 
 function putMarker(obj) {
-    var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(obj["lat"], obj["lng"]),
-        map: map,
-        title: obj["name"]});
-    marker.addListener('click', function () {
-        if (isOpened)
-            infowindow.close();
-        isOpened = true;
-        var contentString = getContent(obj);
-        infowindow = new google.maps.InfoWindow({
-            content: contentString
-        });
-        infowindow.open(map, marker)
-    });
+    var marker = L.marker([obj["lat"], obj["lng"]]).addTo(map);
+    marker.title = obj["name"];
+    marker.bindPopup(getContent(obj));
     restaurants.add(obj);
     markersList.add(marker);
 }
 
 function getContent(obj) {
     return '<b>' + obj["name"] + '</b><br>' +
-            obj["description"] + '<br><br>' +
-            '<b>Address: </b>' + obj["address"] + '</br>' +
-            '<b>Phones: </b>' + obj["telephone"] + '</br>' +
-            '<b>Working hours: </b>' + obj["workingHours"] + '</br></br><a onclick="openRatingPage(\'' + obj["_id"] + '\')">View more</a>';
+        obj["description"] + '<br><br>' +
+        '<b>Address: </b>' + obj["address"] + '</br>' +
+        '<b>Phones: </b>' + obj["telephone"] + '</br>' +
+        '<b>Working hours: </b>' + obj["workingHours"] + '</br></br><a onclick="openRatingPage(\'' + obj["_id"] + '\')">View more</a>';
 }
 
 function updateList() {
@@ -142,9 +132,9 @@ function updateList() {
     for (var i = 0; i < items.length; i++) {
         if (items[i]["name"].toLowerCase().indexOf(inputText.toLowerCase()) > -1 || inputText === "") {
             $('.list-group').append(
-                    '<button type="button" class="list-group-item" onclick="targetRestaurant(' + i + ')"><span class="badge">5</span>'
-                    + items[i]["name"]
-                    + '</button>');
+                '<button type="button" class="list-group-item" onclick="targetRestaurant(' + i + ')"><span class="badge">5</span>'
+                + items[i]["name"]
+                + '</button>');
         }
     }
 }
@@ -162,8 +152,8 @@ function centerRestaurant(id) {
     var markers = Array.from(markersList);
     if (map.getZoom() < 14)
         map.setZoom(14);
-    map.setCenter(markers[id].getPosition());
-    google.maps.event.trigger(markers[id], 'click');
+    map.setView(markers[id].getLatLng());
+    //   google.maps.event.trigger(markers[id], 'click');
 }
 
 function targetRestaurant(id) {
@@ -185,8 +175,10 @@ function targetRestaurant(id) {
 function openRatingPage(_id) {
     position = map.getCenter();
     mode = "rate";
-    $('#map_container').css("visibility", "hidden");
-    $('#map_container').css("display", "none");
+    // $('#map').css("visibility", "hidden");
+    // $('#map').css("display", "none");
+    $('#info_box').css("visibility", "visible");
+    $('#info_box').css("display", "block");
     $('#info_container').css("visibility", "visible");
     $('#info_container').css("display", "block");
     $('#mapButton').removeAttr("active");
@@ -195,11 +187,13 @@ function openRatingPage(_id) {
 
 function openMapPage() {
     mode = "map";
+    $('#info_box').css("visibility", "hidden");
+    $('#info_box').css("display", "none");
     $('#info_container').css("visibility", "hidden");
     $('#info_container').css("display", "none");
-    $('#map_container').css("visibility", "visible");
-    $('#map_container').css("display", "block");
+    // $('#map').css("visibility", "visible");
+    //  $('#map').css("display", "block");
     $('#mapButton').attr("active");
 }
 
-google.maps.event.addDomListener(window, 'load', initMap);
+$(document).ready(initMap());

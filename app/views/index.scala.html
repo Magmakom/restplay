@@ -1,37 +1,93 @@
 @(user: Option[models.User] = None)(implicit lang: play.api.i18n.Messages)
 
-@layout("Restaurant rating", user) {
+@layout("Restaurant rating") {
     <div class="row fill outer-container">
         <div class="col-md-10 fill">
             <div id="main_container">
-                <div id="map_container"></div>
+                <div id="map"></div>
+                <div id="info_box"></div>
                 <div id="info_container" style="padding-left: 20px; margin-top: 0px; margin-bottom: 0px;">
                     <h1 class="restName">Restaurant name</h1>
                     <div class="row" style="padding-top: 30px">
-                        <div class="col-sm-3">
-                            <a href="#" class="thumbnail">
-                                <img src="/images/no-thumbnail.png" alt="...">
-                            </a>
-                            <a href="#" class="thumbnail">
-                                <img src="/images/no-thumbnail.png" alt="...">
-                            </a>
-                        </div>
-                        <div class="col-sm-3">
-                            <a href="#" class="thumbnail">
-                                <img src="/images/no-thumbnail.png" alt="...">
-                                </a>
-                            <a href="#" class="thumbnail">
-                                <img src="/images/no-thumbnail.png" alt="...">
-                            </a>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="container" style="width: 100%;">
-                                <div class="jumbotron" id="restInfo" style="margin-top: 0px; margin-bottom: 0px; padding-top: 5px; padding-bottom:5px; padding-left: 20px; padding-right: 20px; font-size: 14px;">
-                                    DataArt is a technology consulting firm that offers end-to-end solutions, from concept and strategy, to design, implementation and support. We partner with clients to create and support innovative solutions that help businesses become a lasting success in the marketplace.
+                        <div class="col-sm-8">
+                            <script>
+                                    jQuery(document).ready(function ($) {
+
+                                        var jssor_1_SlideshowTransitions = [
+                                            {$Duration:1200,$Opacity:2}
+                                        ];
+
+                                        var jssor_1_options = {
+                                            $AutoPlay: true,
+                                            $SlideshowOptions: {
+                                                $Class: $JssorSlideshowRunner$,
+                                                $Transitions: jssor_1_SlideshowTransitions,
+                                                $TransitionsOrder: 1
+                                            },
+                                            $ArrowNavigatorOptions: {
+                                                $Class: $JssorArrowNavigator$
+                                            },
+                                            $BulletNavigatorOptions: {
+                                                $Class: $JssorBulletNavigator$
+                                            }
+                                        };
+
+                                        var jssor_1_slider = new $JssorSlider$("jssor_1", jssor_1_options);
+
+                                        //responsive code begin
+                                        //you can remove responsive code if you don't want the slider scales while window resizes
+                                        function ScaleSlider() {
+                                            var refSize = jssor_1_slider.$Elmt.parentNode.clientWidth;
+                                            if (refSize) {
+                                                refSize = Math.min(refSize, 800);
+                                                jssor_1_slider.$ScaleWidth(refSize);
+                                            }
+                                            else {
+                                                window.setTimeout(ScaleSlider, 30);
+                                            }
+                                        }
+                                        ScaleSlider();
+                                        $(window).bind("load", ScaleSlider);
+                                        $(window).bind("resize", ScaleSlider);
+                                        $(window).bind("orientationchange", ScaleSlider);
+                                        //responsive code end
+                                    });
+                            </script>
+                            <div id="jssor_1" style="position: relative; margin: 0 auto; top: 0px; left: 0px; width: 800px; height: 400px; overflow: hidden; visibility: hidden;">
+                                    <!-- Loading Screen -->
+                                <div data-u="loading" style="position: absolute; top: 0px; left: 0px;">
+                                    <div style="filter: alpha(opacity=70); opacity: 0.7; position: absolute; display: block; top: 0px; left: 0px; width: 100%; height: 100%;"></div>
+                                    <div style="position:absolute;display:block;background:url('/images/loading.gif') no-repeat center center;top:0px;left:0px;width:100%;height:100%;"></div>
+                                </div>
+                                <div data-u="slides" style="cursor: default; position: relative; top: 0px; left: 0px; width: 800px; height: 400px; overflow: hidden;">
+                                    <div data-p="112.50" style="display: none;">
+                                        <img data-u="image" src="/images/p1.jpg" />
+                                    </div>
+                                    <div data-p="112.50" style="display: none;">
+                                        <img data-u="image" src="/images/p2.jpg" />
+                                    </div>
+                                    <div data-p="112.50" style="display: none;">
+                                        <img data-u="image" src="/images/p3.jpg" />
+                                    </div>
+                                    <div data-p="112.50" style="display: none;">
+                                        <img data-u="image" src="/images/p4.jpg" />
+                                    </div>
+                                    <div data-p="112.50" style="display: none;">
+                                        <img data-u="image" src="/images/p5.jpg" />
                                     </div>
                                 </div>
+                                    <!-- Bullet Navigator -->
+                                <div data-u="navigator" class="jssorb05" style="bottom:16px;right:6px;" data-autocenter="1">
+                                        <!-- bullet navigator item prototype -->
+                                    <div data-u="prototype" style="width:16px;height:16px;"></div>
+                                </div>
+                                    <!-- Arrow Navigator -->
+                                <span data-u="arrowleft" class="jssora12l" style="top:123px;left:0px;width:30px;height:46px;" data-autocenter="2"></span>
+                                <span data-u="arrowright" class="jssora12r" style="top:123px;right:0px;width:30px;height:46px;" data-autocenter="2"></span>
+                                <a href="http://www.jssor.com" style="display:none">Bootstrap Carousel</a>
                             </div>
-                        <div class="col-sm-3">
+                        </div>
+                        <div class="col-sm-2">
                             <h3 style="text-align: left;">Rating:</h3>
                             <ul style="list-style-type:none; padding-left: 15px; padding-right: 15px;">
                                 <li>

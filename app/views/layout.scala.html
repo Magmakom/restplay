@@ -10,7 +10,13 @@
         <title>@title</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
         <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main.css")">
+        <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+        <script src="https://rawgithub.com/emikhalev/leaflet-2gis/master/dgis.js"></script>
+        <script src="http://maps.api.2gis.ru/1.0" type="text/javascript"></script>
+        <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="js/jssor.slider.mini.js"></script>
     </head>
     <body>
         <nav class="navbar navbar-default navbar-static-top">
@@ -70,14 +76,16 @@
         <div class="fill content-container">
             @content
         </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="http://code.jquery.com/jquery.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-json/2.5.1/jquery.json.min.js"></script>
-        <script src="http://maps.googleapis.com/maps/api/js"></script>
-        <script src="@routes.Assets.versioned("js/main.js")"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react-dom.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+        <script src="js/jssor.slider.debug.js"></script>
+        <script src="js/jssor.slider.min.js"></script>
+        <script src="@routes.Assets.versioned("js/main.js")"></script>
         <script type="text/babel" src="@routes.Assets.versioned("js/react-main.js")"></script>
     </body>
 </html>
