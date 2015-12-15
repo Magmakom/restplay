@@ -93,21 +93,25 @@ function initMap() {
     if (position == null) {
         position = L.latLng(46.475406, 30.734472);
     }
-    map = new L.Map("map", {
-        center: position,
-        zoom: 14,
-        zoomAnimation: false
+    map = DG.map('map', {
+        'center': position,
+        'zoom': 14,
+        fullscreenControl: false
     });
-    var dgis = new L.DGis();
-    map.addLayer(dgis);
+   //   zoomAnimation: false
     isOpened = false;
     getMarks();
 }
 
 function putMarker(obj) {
-    var marker = L.marker([obj["lat"], obj["lng"]]).addTo(map);
-    marker.title = obj["name"];
-    marker.bindPopup(getContent(obj));
+    var iconMarker = DG.icon({
+        iconUrl: '/images/marker.svg',
+        iconSize: [36,70149, 48,93516]
+    });
+    var marker = DG.marker([obj["lat"], obj["lng"]],{icon: iconMarker})
+        .addTo(map)
+        .bindPopup(getContent(obj),{maxWidth: 500})
+        .bindLabel(obj["name"]);
     restaurants.add(obj);
     markersList.add(marker);
 }
@@ -153,7 +157,6 @@ function centerRestaurant(id) {
     if (map.getZoom() < 14)
         map.setZoom(14);
     map.setView(markers[id].getLatLng());
-    //   google.maps.event.trigger(markers[id], 'click');
 }
 
 function targetRestaurant(id) {
@@ -161,8 +164,8 @@ function targetRestaurant(id) {
         centerRestaurant(id);
     } else {
         if (mode === "rate") {
-            var rests = Array.from(restaurants);
-            getRestaurantInfo(rests[id]["_id"]);
+           // var rests = Array.from(restaurants);
+           // getRestaurantInfo(rests[id]["_id"]);
         }
     }
 }
@@ -182,7 +185,7 @@ function openRatingPage(_id) {
     $('#info_container').css("visibility", "visible");
     $('#info_container').css("display", "block");
     $('#mapButton').removeAttr("active");
-    getRestaurantInfo(_id);
+   // getRestaurantInfo(_id);
 }
 
 function openMapPage() {
