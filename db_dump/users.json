@@ -1,0 +1,11 @@
+{
+	"_id": {
+		"$oid": "566c484388177c109c9bdc67"
+	},
+	"email": "admin@example.com",
+	"loginInfo": {
+		"providerID": "credentials",
+		"providerKey": "admin@example.com"
+	},
+	"name": "John"
+}
