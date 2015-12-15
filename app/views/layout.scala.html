@@ -38,23 +38,20 @@
                             <h1>Login</h1>
                             <div class="input-group input-group-sm" id="group-autoriz">
                                 @helper.form(controllers.routes.AuthController.authenticate){
-                                    <div class="form-group  " id="email_field">
-		                                  <label class="control-label sr-only" for="email">Email</label>
-                                	    <input type="email" id="email" name="email" value="" class="form-control input-lg" placeholder="Email">
-                                    </div>
-                                    <div class="form-group  " id="password_field">
-                                      <label class="control-label sr-only" for="password">Password</label>
-                                      <input type="password" id="password" name="password" value="" class="form-control input-lg" placeholder="Password">
-                                    </div>
+                                    <!-- <div class="form-group  " id="email_field"> -->
+		                                  <!-- <label class="control-label sr-only" for="email">Email</label> -->
+                                	    <input type="email" id="email" name="email" value="" class="form-control input-lg" placeholder="Email"  aria-describedby="sizing-addon3">
+                                    <!-- </div> -->
+                                    <!-- <div class="form-group  " id="password_field"> -->
+                                      <!-- <label class="control-label sr-only" for="password">Password</label> -->
+                                      <input type="password" id="password" name="password" value="" class="form-control input-lg" placeholder="Password" aria-describedby="sizing-addon3">
+                                    <!-- </div> -->
                                       <div class="checkbox">
                                       		<label for="rememberMe">
                                         			<input type="checkbox" id="rememberMe" name="rememberMe" value="true" checked="true">
-                                        			Remember my login on this computer
+                                        			Remember me
                                       		</label>
                                   		</div>
-                                    <!-- @helper.inputText(form("email"), 'placeholder -> "Login...", 'class -> "form-control input-lg")
-                                    @helper.inputPassword(form("password"), 'placeholder -> "Password...", 'class -> "form-control input-lg")
-                                    @helper.checkbox(form("rememberMe"), '_text -> "Remember me", 'checked -> true) -->
                                     <div class="form-group">
                                         <div>
                                             <button id="submit" type="submit" value="submit" class="btn btn-lg btn-primary btn-block">Sign In</button>
