@@ -1,12 +1,14 @@
+$(document).ready(initMap());
+
 var map;
 var position;
 var myOptions;
 var user_data;
 var markersList = new Set();
 var restaurants = new Set();
+var curRestIndex;
 var infowindow;
 var isOpened;
-var mode;
 var updatelistTimer;
 
 $(function () {
@@ -19,6 +21,18 @@ $(function () {
         $('#box').animate({'top': '-400px'}, 500, function () {
             $('#overlay').fadeOut('fast');
         });
+    });
+});
+
+$(function () {
+    $('#rest_info_close').click(function () {
+        $('#info_box').css("visibility", "hidden");
+        $('#info_box').css("display", "none");
+        $('#info_container').css("visibility", "hidden");
+        $('#info_container').css("display", "none");
+        var markers = Array.from(markersList);
+      //  map.fireEvent('click', );
+        markers[curRestIndex].openPopup();
     });
 });
 
@@ -75,7 +89,6 @@ function getRestaurantsByName() {
 }
 
 function initMap() {
-    mode = "map";
     $('#info_box').css("visibility", "hidden");
     $('#info_box').css("display", "none");
     $('#info_container').css("visibility", "hidden");
@@ -106,18 +119,18 @@ function putMarker(obj) {
     });
     var marker = DG.marker([obj["lat"], obj["lng"]],{icon: iconMarker})
         .addTo(map)
-        .bindPopup(getContent(obj),{maxWidth: 500})
+        .bindPopup(getContent(obj, markersList.size),{maxWidth: 500})
         .bindLabel(obj["name"]);
     restaurants.add(obj);
     markersList.add(marker);
 }
 
-function getContent(obj) {
+function getContent(obj, index) {
     return '<b>' + obj["name"] + '</b><br>' +
         obj["description"] + '<br><br>' +
         '<b>Address: </b>' + obj["address"] + '</br>' +
         '<b>Phones: </b>' + obj["telephone"] + '</br>' +
-        '<b>Working hours: </b>' + obj["workingHours"] + '</br></br><a onclick="openRatingPage(\'' + obj["_id"] + '\')">View more</a>';
+        '<b>Working hours: </b>' + obj["workingHours"] + '</br></br><a onclick="openRatingPage(' + index + ')">View more</a>';
 }
 
 function updateList() {
@@ -127,8 +140,8 @@ function updateList() {
     }
     updatelistTimer = setTimeout(getRestaurantsByName, 1000);
     $('.list-group-item').remove();
-    var inputText = document.getElementById("search").value;
-    var items = Array.from(restaurants);
+    inputText = document.getElementById("search").value;
+    items = Array.from(restaurants);
     for (var i = 0; i < items.length; i++) {
         if (items[i]["name"].toLowerCase().indexOf(inputText.toLowerCase()) > -1 || inputText === "") {
             $('.list-group').append(
@@ -149,21 +162,22 @@ function updateRestaurantInfo(restaurant) {
 }
 
 function centerRestaurant(id) {
-    var markers = Array.from(markersList);
-    if (map.getZoom() < 14)
-        map.setZoom(14);
-    map.setView(markers[id].getLatLng());
+    if (curRestIndex!=null){
+        markers = Array.from(markersList);
+        markers[curRestIndex].closePopup();
+    }
+    curRestIndex = id;
+    markers = Array.from(markersList);
+    if (map.getZoom() < 13)
+        map.setZoom(13);
+    map.setView(markers[curRestIndex].getLatLng());
+    openRatingPage(curRestIndex);
 }
 
 function targetRestaurant(id) {
-    if (mode === "map") {
-        centerRestaurant(id);
-    } else {
-        if (mode === "rate") {
-           // var rests = Array.from(restaurants);
-           // getRestaurantInfo(rests[id]["_id"]);
-        }
-    }
+    centerRestaurant(id);
+    // var rests = Array.from(restaurants);
+    // getRestaurantInfo(rests[id]["_id"]);
 }
 
 //var button = document.getElementById("ratingButton");
@@ -171,9 +185,9 @@ function targetRestaurant(id) {
 //var button = document.getElementById("mapButton");
 //button.classList.remove("active");
 
-function openRatingPage(_id) {
+function openRatingPage(index) {
+    curRestIndex = index;
     position = map.getCenter();
-    mode = "rate";
     // $('#map').css("visibility", "hidden");
     // $('#map').css("display", "none");
     $('#info_box').css("visibility", "visible");
@@ -181,11 +195,12 @@ function openRatingPage(_id) {
     $('#info_container').css("visibility", "visible");
     $('#info_container').css("display", "block");
     $('#mapButton').removeAttr("active");
+    markers = Array.from(markersList);
+    markers[curRestIndex].closePopup();
    // getRestaurantInfo(_id);
 }
 
 function openMapPage() {
-    mode = "map";
     $('#info_box').css("visibility", "hidden");
     $('#info_box').css("display", "none");
     $('#info_container').css("visibility", "hidden");
@@ -195,4 +210,4 @@ function openMapPage() {
     $('#mapButton').attr("active");
 }
 
-$(document).ready(initMap());
+//document.addEventListener("DOMContentLoaded", initMap());
