@@ -80,25 +80,21 @@ function initMap() {
     $('#info_box').css("display", "none");
     $('#info_container').css("visibility", "hidden");
     $('#info_container').css("display", "none");
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            if (position == null) {
-                position = L.latLng(position.coords.latitude, position.coords.longitude);
-            }
-        });
-    } else {
-        // Browser doesn't support Geolocation
-        // handleLocationError(false, infoWindow, map.getCenter());
-    }
-    if (position == null) {
-        position = L.latLng(46.475406, 30.734472);
-    }
+    position = DG.LatLng(54.98, 82.89);
     map = DG.map('map', {
         'center': position,
         'zoom': 14,
         fullscreenControl: false
     });
-   //   zoomAnimation: false
+    map.locate({setView: true, watch: true})
+        .on('locationfound', function (e) {
+            position = DG.LatLng(e.latitude, e.longitude);
+        })
+        .on('locationerror', function (e) {
+            console.log(e);
+            // alert("Location access denied.");
+        });
+    //   zoomAnimation: false
     isOpened = false;
     getMarks();
 }
