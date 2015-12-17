@@ -2,6 +2,13 @@ package models
 
 import org.joda.time.DateTime
 import reactivemongo.bson.BSONObjectID
+import scala.collection.Seq
+
+sealed case class Label(
+  text: String,
+  color: String,
+  IsPositive: Boolean
+)
 
 case class Review(
   _id: BSONObjectID = BSONObjectID.generate,
@@ -13,7 +20,8 @@ case class Review(
   title: String,
   content: String,
   creationDate: DateTime = new DateTime,
-  updateDate: DateTime = new DateTime
+  updateDate: DateTime = new DateTime,
+  labels: Option[Seq[Label]]
 )
 
 object Review{
@@ -21,7 +29,8 @@ object Review{
   import play.api.libs.json.Json
   import play.modules.reactivemongo.json.BSONFormats._
 
-  implicit val restaurantFormat = Json.format[Review]
+  implicit val labelFormat = Json.format[Label]
+  implicit val reviewFormat = Json.format[Review]
 
   import play.api.data._
   import play.api.data.format.Formats._
@@ -39,7 +48,12 @@ object Review{
       "title" -> text,
       "content" -> text,
       "creationDate" -> jodaDate,
-      "updateDate" -> jodaDate
+      "updateDate" -> jodaDate,
+      "label" -> optional(seq(mapping(
+        "text" -> text,
+        "color" -> text,
+        "IsPositive" -> boolean
+      )(Label.apply)(Label.unapply)))
     )(Review.apply)(Review.unapply)
   )
 
