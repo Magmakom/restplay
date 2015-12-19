@@ -1,15 +1,19 @@
-$(document).ready(initMap());
-
 var map;
 var position;
-var myOptions;
 var user_data;
-var markersList = new Set();
-var restaurants = new Set();
+var restaurantList = new Map();
 var curRestIndex;
-var infowindow;
-var isOpened;
 var updatelistTimer;
+
+function Restaurant(obj, marker) {
+    this._id = obj["_id"];
+    this.name = obj["name"];
+    this.description = obj["description"];
+    this.address = obj["address"];
+    this.telephone = obj["telephone"];
+    this.workingHours = obj["workingHours"];
+    this.marker = marker;
+}
 
 $(function () {
     $('#signIn').click(function () {
@@ -26,16 +30,33 @@ $(function () {
 
 $(function () {
     $('#rest_info_close').click(function () {
-        $('#info_box').css("visibility", "hidden");
-        $('#info_box').css("display", "none");
-        $('#info_container').css("visibility", "hidden");
-        $('#info_container').css("display", "none");
-        var markers = Array.from(markersList);
-      //  map.fireEvent('click', );
-        markers[curRestIndex].openPopup();
+        $('#info_box').css({"visibility": "hidden", "display": "none"});
+        $('#info_container').css({"visibility": "hidden", "display": "none"});
+        marker = restaurantList.get(curRestIndex).marker;
+        marker.openPopup();
     });
 });
 
+function initMap() {
+    $('#info_box').css({"visibility": "hidden", "display": "none"});
+    $('#info_container').css({"visibility": "hidden", "display": "none"});
+    position = DG.latLng(54.98, 82.89);
+    map = DG.map('map', {
+        'center': position,
+        'zoom': 14,
+        fullscreenControl: false
+    });
+    map.locate({setView: true, watch: false})
+        .on('locationfound', function (e) {
+            position = DG.latLng(e.latitude, e.longitude);
+        })
+        .on('locationerror', function (e) {
+            console.log(e);
+        });
+    getMarks();
+}
+
+// get all active marks from server
 function getMarks() {
     user_data = {
         mod: "all"
@@ -53,63 +74,11 @@ function getMarks() {
                     putMarker(dbl[i]);
                 }
             }
-            updateList();
         },
         error: function () {
             alert('Can not connect to the server');
         }
     });
-    //  var arr = Array.from(markersList);
-}
-
-function getRestaurantInfo(restaurantId) {
-    user_data = {
-        _id: restaurantId
-    };
-    $.ajax({
-        type: "GET",
-        url: "/api/restaurantInfo",
-        data: {
-            user_data: $.toJSON(user_data)
-        },
-        success: function (data) {
-            var dbl = data;
-            updateRestaurantInfo(dbl);
-        },
-        error: function () {
-            alert('Can not connect to the server');
-        }
-    });
-}
-
-function getRestaurantsByName() {
-    // GET to server
-    var inputText = document.getElementById("search").value;
-    updateList();
-}
-
-function initMap() {
-    $('#info_box').css("visibility", "hidden");
-    $('#info_box').css("display", "none");
-    $('#info_container').css("visibility", "hidden");
-    $('#info_container').css("display", "none");
-    position = DG.LatLng(54.98, 82.89);
-    map = DG.map('map', {
-        'center': position,
-        'zoom': 14,
-        fullscreenControl: false
-    });
-    map.locate({setView: true, watch: true})
-        .on('locationfound', function (e) {
-            position = DG.LatLng(e.latitude, e.longitude);
-        })
-        .on('locationerror', function (e) {
-            console.log(e);
-            // alert("Location access denied.");
-        });
-    //   zoomAnimation: false
-    isOpened = false;
-    getMarks();
 }
 
 function putMarker(obj) {
@@ -119,20 +88,50 @@ function putMarker(obj) {
     });
     var marker = DG.marker([obj["lat"], obj["lng"]],{icon: iconMarker})
         .addTo(map)
-        .bindPopup(getContent(obj, markersList.size),{maxWidth: 500})
+        .bindPopup(getContent(obj),{maxWidth: 500})
         .bindLabel(obj["name"]);
-    restaurants.add(obj);
-    markersList.add(marker);
+    marker.on('click', function() {
+        curRestIndex = obj["_id"];
+    });
+    restaurantList.set(obj["_id"], new Restaurant(obj, marker));
 }
 
-function getContent(obj, index) {
+//generate content for marker popup
+function getContent(obj) {
     return '<b>' + obj["name"] + '</b><br>' +
         obj["description"] + '<br><br>' +
         '<b>Address: </b>' + obj["address"] + '</br>' +
         '<b>Phones: </b>' + obj["telephone"] + '</br>' +
-        '<b>Working hours: </b>' + obj["workingHours"] + '</br></br><a onclick="openRatingPage(' + index + ')">View more</a>';
+        '<b>Working hours: </b>' + obj["workingHours"] + '</br></br><a onclick="openRestInfoPage()">View more</a>';
+     //   '<b>Working hours: </b>' + obj["workingHours"] + '</br></br><a onclick="openRestInfoPage(\'' + obj["_id"] + '\')">View more</a>';
 }
 
+function getRestaurantsByName() {
+    // GET to server
+    var inputText = document.getElementById("search").value;
+}
+
+// target rest from search box
+function targetRestaurant(index) {
+    if (curRestIndex!=null){
+        marker = restaurantList.get(curRestIndex).marker;
+        marker.closePopup();
+    }
+    curRestIndex = index;
+    marker = restaurantList.get(curRestIndex).marker;
+    openRestInfoPage();
+}
+
+function openRestInfoPage() {
+    marker = restaurantList.get(curRestIndex).marker;
+    map.setView(marker.getLatLng());
+    $('#info_box').css({"visibility": "visible", "display": "block"});
+    $('#info_container').css({"visibility": "visible", "display": "block"});
+    $('#mapButton').removeAttr("active");
+    marker.closePopup();
+}
+
+// no needs today coz of react.js
 function updateList() {
     return
     if (updatelistTimer !== null) {
@@ -152,62 +151,5 @@ function updateList() {
     }
 }
 
-function updateRestaurantInfo(restaurant) {
-    $('.restName').html(restaurant["name"]);
-    $('#restInfo').html(restaurant["description"]);
-    // $('#rateCuisine').html(restaurant["cuisine"] + "/5");
-    // $('#rateInterior').html(restaurant["interior"] + "/5");
-    // $('#rateService').html(restaurant["service"] + "/5");
-    $('#restView').html(restaurant["description"]);
-}
-
-function centerRestaurant(id) {
-    if (curRestIndex!=null){
-        markers = Array.from(markersList);
-        markers[curRestIndex].closePopup();
-    }
-    curRestIndex = id;
-    markers = Array.from(markersList);
-    if (map.getZoom() < 13)
-        map.setZoom(13);
-    map.setView(markers[curRestIndex].getLatLng());
-    openRatingPage(curRestIndex);
-}
-
-function targetRestaurant(id) {
-    centerRestaurant(id);
-    // var rests = Array.from(restaurants);
-    // getRestaurantInfo(rests[id]["_id"]);
-}
-
-//var button = document.getElementById("ratingButton");
-//button.classList.add("active");
-//var button = document.getElementById("mapButton");
-//button.classList.remove("active");
-
-function openRatingPage(index) {
-    curRestIndex = index;
-    position = map.getCenter();
-    // $('#map').css("visibility", "hidden");
-    // $('#map').css("display", "none");
-    $('#info_box').css("visibility", "visible");
-    $('#info_box').css("display", "block");
-    $('#info_container').css("visibility", "visible");
-    $('#info_container').css("display", "block");
-    $('#mapButton').removeAttr("active");
-    markers = Array.from(markersList);
-    markers[curRestIndex].closePopup();
-   // getRestaurantInfo(_id);
-}
-
-function openMapPage() {
-    $('#info_box').css("visibility", "hidden");
-    $('#info_box').css("display", "none");
-    $('#info_container').css("visibility", "hidden");
-    $('#info_container').css("display", "none");
-    // $('#map').css("visibility", "visible");
-    //  $('#map').css("display", "block");
-    $('#mapButton').attr("active");
-}
-
 //document.addEventListener("DOMContentLoaded", initMap());
+$(document).ready(initMap());
