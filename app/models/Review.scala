@@ -49,7 +49,7 @@ object Review{
       "content" -> text,
       "creationDate" -> jodaDate,
       "updateDate" -> jodaDate,
-      "label" -> optional(seq(mapping(
+      "labels" -> optional(seq(mapping(
         "text" -> text,
         "color" -> text,
         "IsPositive" -> boolean
