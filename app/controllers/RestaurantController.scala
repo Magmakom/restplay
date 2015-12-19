@@ -25,6 +25,12 @@ class RestaurantController extends Controller {
     }
   }
 
+  def findByIdAsJson(id: String) = Action.async { request =>
+    RestaurantRepository.findById(id).map  { result =>
+      Ok(Json.toJson(result).transform(jsonTransformer).get)
+    }
+  }
+
   def showCreationForm = Action { request =>
     Ok(views.html.editRestaurant(None, Restaurant.form))
   }

@@ -5,9 +5,10 @@
 # Home page
 GET     /                               controllers.Application.index
 GET     /api/restaurant                 controllers.RestaurantController.findAllAsJson
-GET     /api/review/                    controllers.ReviewController.findAllAsJson
+GET     /api/restaurant/:id                controllers.RestaurantController.findByIdAsJson(id)
+GET     /api/review                    controllers.ReviewController.findAllAsJson
 
-GET     /api/restaurant/new             controllers.RestaurantController.showCreationForm
+GET     /restaurant/new             controllers.RestaurantController.showCreationForm
 GET     /review/new                     controllers.ReviewController.showCreationForm
 #POST   /review/new                     controllers.ReviewController.create
 GET     /review/:id                     controllers.ReviewController.showEditForm(id)
