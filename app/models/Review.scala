@@ -23,13 +23,19 @@ case class Review(
   updateDate: DateTime = new DateTime,
   labels: Option[Seq[Label]]
 )
-
-object Review{
+object Label{
 
   import play.api.libs.json.Json
   import play.modules.reactivemongo.json.BSONFormats._
 
   implicit val labelFormat = Json.format[Label]
+
+}
+object Review{
+
+  import play.api.libs.json.Json
+  import play.modules.reactivemongo.json.BSONFormats._
+
   implicit val reviewFormat = Json.format[Review]
 
   import play.api.data._

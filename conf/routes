@@ -10,9 +10,11 @@ GET     /api/review                    controllers.ReviewController.findAllAsJso
 
 GET     /restaurant/new             controllers.RestaurantController.showCreationForm
 GET     /review/new                     controllers.ReviewController.showCreationForm
-#POST   /review/new                     controllers.ReviewController.create
-GET     /review/:id                     controllers.ReviewController.showEditForm(id)
-#POST   /review/:id                     controllers.ReviewController.edit(id)
+POST   /review/new                     controllers.ReviewController.create
+GET     /review/:id/edit                     controllers.ReviewController.showEditForm(id)
+POST   /review/:id/edit                   controllers.ReviewController.edit(id)
+POST   /review/:id/delete                controllers.ReviewController.delete(id)
+
 
 GET     /signOut                        controllers.Application.signOut
 POST    /authenticate/credentials       controllers.AuthController.authenticate

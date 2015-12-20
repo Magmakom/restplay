@@ -1,4 +1,6 @@
-@(id: Option[String], form: Form[models.Review])(implicit lang: play.api.i18n.Messages)
+@(id: Option[String], reviewForm: Form[models.Review])(implicit lang: play.api.i18n.Messages)
+
+@import helper._
 
 @layout("Restaurant rating") {
     <h2>
@@ -8,12 +10,27 @@
             Edit
         } a review
     </h2>
-    @helper.inputText(form("id"))
-    @helper.inputText(form("restaurantId"))
-    @helper.inputText(form("title"))
-    @helper.textarea(form("content"))
-    @helper.inputDate(form("creationDate"))
+  <!-- @form(action = (if(!id.isDefined) routes.ReviewController.create else routes.ReviewController.edit(id.get)), 'class -> "form-horizontal") { -->
+<form>
+    @inputText(reviewForm("id"))
+    @inputText(reviewForm("restaurantId"))
+    @inputText(reviewForm("title"))
+    @textarea(reviewForm("content"))
+    @inputDate(reviewForm("creationDate"))
+    @repeat(reviewForm("labels"), min = 1) { labelField =>
+        @inputText(labelField("text"))
+        @select(
+           labelField("color"),
+           helper.options("#FF0000" -> "Red", "#000000" -> "Black", "#FFFF00" -> "Yeollow", "#FFFFFF" -> "White")
+        )
+        @select(
+           labelField("isPositive"),
+           helper.options("true" -> "Yes", "false" -> "No")
+        )
+    }
     <div class="form-actions">
-        <input class="btn btn-primary" type="submit">
+        <button id="submit" type="submit" value="submit" class="btn btn-lg btn-primary btn-block"></button>
     </div>
+      <!-- } -->
+    </form>
 }
