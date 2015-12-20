@@ -48,7 +48,7 @@ class RestaurantController {
                 // store absolute index
                 // this hack is only needed to keep consistency with initial main.js
                 // better solution would be to address targetRestaurant by real id
-                data.map((restaurant, i) => restaurant.index = i);
+                data.map((restaurant, i) => restaurant.index = data[i]["_id"]); //like this?
                 
                 this.restaurants = data;
                 this.listComponent.setState({data: data});
