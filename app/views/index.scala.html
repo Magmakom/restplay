@@ -1,6 +1,6 @@
 @(user: Option[models.User] = None)(implicit lang: play.api.i18n.Messages)
 
-@layout("Restaurant rating") {
+@layout("Restaurant rating", user) {
     <div class="row fill outer-container">
         <div class="col-md-10 fill">
             <div id="main_container">
