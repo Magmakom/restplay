@@ -4,6 +4,9 @@ var user_data;
 var restaurantList = new Map();
 var curRestIndex;
 var updatelistTimer;
+var newMarker;
+var iconMarker;
+var iconNewMarker;
 
 function Restaurant(obj, marker) {
     this._id = obj["_id"];
@@ -40,20 +43,29 @@ $(function () {
 function initMap() {
     $('#info_box').css({"visibility": "hidden", "display": "none"});
     $('#info_container').css({"visibility": "hidden", "display": "none"});
-    position = DG.latLng(54.98, 82.89);
-    map = DG.map('map', {
-        'center': position,
-        'zoom': 14,
-        fullscreenControl: false
-    });
-    map.locate({setView: true, watch: false})
-        .on('locationfound', function (e) {
-            position = DG.latLng(e.latitude, e.longitude);
-        })
-        .on('locationerror', function (e) {
-            console.log(e);
+    DG.then(function() {
+        position = DG.latLng(46.482526, 30.7233095);
+        map = DG.map('map', {
+            'center': position,
+            fullscreenControl: false
         });
-    getMarks();
+        map.locate({setView: true, watch: false})
+            .on('locationfound', function (e) {
+                position = DG.latLng(e.latitude, e.longitude);
+            })
+            .on('locationerror', function (e) {
+                console.log(e);
+            });
+        iconMarker = DG.icon({
+            iconUrl: '/images/marker.svg',
+            iconSize: [36,70149, 48,93516]
+        });
+        iconNewMarker = DG.icon({
+            iconUrl: '/images/newmarker.svg',
+            iconSize: [36,70149, 48,93516]
+        });
+        getMarks()
+    });
 }
 
 // get all active marks from server
@@ -82,10 +94,6 @@ function getMarks() {
 }
 
 function putMarker(obj) {
-    var iconMarker = DG.icon({
-        iconUrl: '/images/marker.svg',
-        iconSize: [36,70149, 48,93516]
-    });
     var marker = DG.marker([obj["lat"], obj["lng"]],{icon: iconMarker})
         .addTo(map)
         .bindPopup(getContent(obj),{maxWidth: 500})
@@ -129,6 +137,67 @@ function openRestInfoPage() {
     $('#info_container').css({"visibility": "visible", "display": "block"});
     $('#mapButton').removeAttr("active");
     marker.closePopup();
+}
+
+function createNewMarker(){
+    $('#addRestButton').remove();
+    newMarker = DG.marker(map.getCenter(),{
+        icon: iconNewMarker,
+        draggable: true})
+        .bindPopup('<a onclick="openEditrestaurantPage(newMarker)">Edit restaurant info</a>',{
+            maxWidth: 350,
+            sprawling: true
+        })
+        .addTo(map)
+        .bindLabel("New restaurant");
+}
+
+function openEditrestaurantPage(marker){
+    editUrl = "/restaurant/new" + "?" + "lat=" + marker.getLatLng().lat + "&lng=" + marker.getLatLng().lng;
+    window.open(editUrl, "_self", false);
+}
+
+function updateRatingPage(){
+    $('.rating_table_row').remove();
+
+    user_data = {
+        mod: "top100"
+    };
+    $.ajax({
+        type: "GET",
+        url: "/api/ratingPage",
+        data: {
+            user_data: $.toJSON(user_data)
+        },
+        success: function (data) {
+            var restaurants = data;
+            if (restaurants.length > 0) {
+                for (var i = 0; i < dbl.length; i++) {
+                    $('.rating_table_body').append(
+                        '<tr class="rating_table_row">' +
+                        '<th scope="row">i</th>'+
+                        '<td>restaurants["name"]</td>'+
+                        '<td>restaurants["cuisine"]</td>'+
+                        '<td>restaurants["interior"]</td>'+
+                        '<td>restaurants["service"]</td>'+
+                        '<td>5</td>'+
+                        '</tr>');
+                }
+            }
+        },
+        error: function () {
+            alert('Can not connect to the server');
+        }
+    });
+
+    for (var i = 0; i < items.length; i++) {
+        if (items[i]["name"].toLowerCase().indexOf(inputText.toLowerCase()) > -1 || inputText === "") {
+            $('.list-group').append(
+                '<button type="button" class="list-group-item" onclick="targetRestaurant(' + i + ')"><span class="badge">5</span>'
+                + items[i]["name"]
+                + '</button>');
+        }
+    }
 }
 
 // no needs today coz of react.js

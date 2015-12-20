@@ -1,10 +1,21 @@
 @(user: Option[models.User] = None)(implicit lang: play.api.i18n.Messages)
 
 @layout("Restaurant rating", user) {
+    <script src="http://maps.api.2gis.ru/2.0/loader.js?pkg=full"></script>
+    <script src="js/jssor.slider.debug.js"></script>
+    <script src="js/jssor.slider.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react-dom.js"></script>
+    <script src="@routes.Assets.versioned("js/main.js")"></script>
+    <script type="text/babel" src="@routes.Assets.versioned("js/react-main.js")"></script>
     <div class="row fill outer-container">
         <div class="col-md-10 fill">
             <div id="main_container">
                 <div id="map"></div>
+                @if(user.isDefined) {
+                    <button type="button" class="btn btn-danger" id="addRestButton" onclick="createNewMarker()">
+                        New restaurant</button>
+                }
                 <div id="info_box" style="visibility: hidden; display: none;"></div>
                 <div id="info_container" style="padding-left: 20px; margin-top: 0px; margin-bottom: 0px; visibility: hidden; display: none;">
                     <h1 class="restName">Restaurant name</h1>
@@ -12,8 +23,7 @@
                     <div class="row" style="padding-top: 30px">
                         <div class="col-sm-8">
                             <script>
-                                    jQuery(document).ready(function ($) {
-
+                                    $(document).ready(function ($) {
                                         var jssor_1_SlideshowTransitions = [
                                             {$Duration:1200,$Opacity:2}
                                         ];

@@ -1,0 +1,24 @@
+@(user: Option[models.User] = None)(implicit lang: play.api.i18n.Messages)
+
+@layout("Restaurant rating", user) {
+    <div class="row fill outer-container">
+        <div class="col-md-12 fill">
+            <div id="rating_container">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Cuisine</th>
+                            <th>Interior</th>
+                            <th>Service</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody class="rating_table_body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
