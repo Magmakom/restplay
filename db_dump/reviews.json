@@ -99,11 +99,11 @@
 	},
   "labels": [
     {"text": "afwul service",
-      "color": "#0066ff",
-      "IsPositive": false},
+      "color": "#0000ff",
+      "isPositive": false},
     {"text": "tasty cookies",
       "color": "#ffff00",
-      "IsPositive": true}
+      "isPositive": true}
   ]
 }
 {
@@ -128,6 +128,6 @@
   "labels": [
     {"text": "cockroaches in soup",
       "color": "#000000",
-      "IsPositive": false}
+      "isPositive": false}
   ]
 }

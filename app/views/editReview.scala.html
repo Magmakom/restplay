@@ -20,12 +20,19 @@
     @repeat(reviewForm("labels"), min = 1) { labelField =>
         @inputText(labelField("text"))
         @select(
-           labelField("color"),
-           helper.options("#FF0000" -> "Red", "#000000" -> "Black", "#FFFF00" -> "Yeollow", "#FFFFFF" -> "White")
+            labelField("color"),
+            helper.options(
+                "#ff0000" -> "Red",
+                "#000000" -> "Black",
+                "#0000ff" -> "Blue",
+                "#008000" -> "Green",
+                "#00ff00" -> "Lime",
+                "#ffff00" -> "Yellow",
+                "#ffffff" -> "White")
         )
         @select(
-           labelField("isPositive"),
-           helper.options("true" -> "Yes", "false" -> "No")
+            labelField("isPositive"),
+            helper.options("true" -> "Yes", "false" -> "No")
         )
     }
     <div class="form-actions">

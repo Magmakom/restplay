@@ -7,7 +7,7 @@ import scala.collection.Seq
 sealed case class Label(
   text: String,
   color: String,
-  IsPositive: Boolean
+  isPositive: Boolean
 )
 
 case class Review(
@@ -58,7 +58,7 @@ object Review{
       "labels" -> optional(seq(mapping(
         "text" -> text,
         "color" -> text,
-        "IsPositive" -> boolean
+        "isPositive" -> boolean
       )(Label.apply)(Label.unapply)))
     )(Review.apply)(Review.unapply)
   )
