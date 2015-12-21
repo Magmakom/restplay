@@ -2,8 +2,8 @@
 
 @import helper._
 
-@layout("Restaurant rating") {
-  <div class="row fill outer-container">
+@layout("Edit restaurant") {
+<div class="row fill outer-container">
   @form(action = routes.RestaurantController.edit(id)) {
     @inputText(restraurantForm("name"))
     @inputText(restraurantForm("telephone"))
@@ -14,5 +14,5 @@
         <input class="btn btn-primary" type="submit">
     </div>
   }
-  </div>
+</div>
 }

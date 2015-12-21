@@ -1,13 +1,16 @@
-@(id: String, reviewForm: Form[models.Review])(implicit lang: play.api.i18n.Messages)
+@(reviewForm: Form[models.Review], restaurantId: String)(implicit lang: play.api.i18n.Messages)
 
 @import helper._
 
-@layout("Edit review") {
+@layout("Add a new review") {
 <div class="row fill outer-container">
-  @form(action = routes.ReviewController.edit(id), 'class -> "form-horizontal") {
+  @form(action = routes.ReviewController.create) {
     @inputText(reviewForm("title"))
     @textarea(reviewForm("content"))
-    @repeat(reviewForm("labels"), min = reviewForm("labels").indexes.length + 1) { labelField =>
+    @select(reviewForm("cuisine"), helper.options("1" -> "1",  "2" -> "2", "3" -> "3", "4" -> "4", "5" -> "5"))
+    @select(reviewForm("interior"), helper.options("1" -> "1",  "2" -> "2", "3" -> "3", "4" -> "4", "5" -> "5"))
+    @select(reviewForm("service"), helper.options("1" -> "1",  "2" -> "2", "3" -> "3", "4" -> "4", "5" -> "5"))
+    @repeat(reviewForm("labels"), min = 1) { labelField =>
         @inputText(labelField("text"))
         @select(
             labelField("color"),
@@ -25,6 +28,7 @@
             helper.options("true" -> "Yes", "false" -> "No")
         )
     }
+    <input type="hidden" name="restaurantId" value=@restaurantId>
     <div class="form-actions">
         <input class="btn btn-primary" type="submit">
     </div>

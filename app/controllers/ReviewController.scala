@@ -25,7 +25,7 @@ class ReviewController @Inject() (
     ReviewRepository.findAll().map { result =>
       Ok(Json.toJson(result))
     }
-  }  
+  }
 
   def findByIdAsJson(id: String) = Action.async { request =>
     ReviewRepository.findById(id).map  { result =>
@@ -36,7 +36,7 @@ class ReviewController @Inject() (
   def create = SecuredAction.async { implicit request =>
     Review.form.bindFromRequest.fold(
       errors => Future.successful(
-        Ok(views.html.editReview(None, errors))),
+        Ok(views.html.editReview("", errors))),
       // if no error, then insert the article into the 'reviews' collection
       review => ReviewRepository.insert(review.copy())
     ).map(_ => Redirect(routes.Application.index))
@@ -49,12 +49,12 @@ class ReviewController @Inject() (
 
     Review.form.bindFromRequest.fold(
       errors => Future.successful(
-        Ok(views.html.editReview(Some(id), errors))),
-
+        Ok(views.html.editReview(id, errors))),
       review => {
         val modifier = Json.obj(
           "$set" -> Json.obj(
             // "updateDate" -> BSONDateTime(new DateTime().getMillis),
+            "updateDate" -> review.updateDate,
             "title" -> review.title,
             "content" -> review.content,
             "cuisine" -> review.cuisine,
@@ -74,15 +74,15 @@ class ReviewController @Inject() (
     ReviewRepository.removeById(BSONObjectID(id)).map(_ => Ok).recover { case _ => InternalServerError }
   }
 
-  def showCreationForm = SecuredAction.async  { request =>
-    Future.successful(Ok(views.html.editReview(None, Review.form)))
+  def showCreationForm(restaurantId: String) = SecuredAction.async  { request =>
+    Future.successful(Ok(views.html.createReview(Review.form, restaurantId)))
   }
 
   def showEditForm(id: String) = SecuredAction.async  { request =>
     ReviewRepository.findById(id).map  { result =>
       result match {
         case None => Redirect(routes.Application.index)
-        case Some(_) => Ok(views.html.editReview(Some(id), Review.form.fill(result.get)))
+        case Some(_) => Ok(views.html.editReview(id, Review.form.fill(result.get)))
       }
     }
   }

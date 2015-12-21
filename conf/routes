@@ -15,7 +15,7 @@ GET     /restaurant/:id/edit       controllers.RestaurantController.showEditForm
 POST    /restaurant/:id/edit       controllers.RestaurantController.edit(id)
 DELETE  /restaurant/:id/delete     controllers.RestaurantController.delete(id)
 
-GET     /review/new                controllers.ReviewController.showCreationForm
+GET     /review/new                controllers.ReviewController.showCreationForm(restaurantId: String)
 POST    /review/new                controllers.ReviewController.create
 GET     /review/:id/edit           controllers.ReviewController.showEditForm(id)
 POST    /review/:id/edit           controllers.ReviewController.edit(id)
