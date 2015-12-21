@@ -7,6 +7,7 @@ var updatelistTimer;
 var newMarker;
 var iconMarker;
 var iconNewMarker;
+var autorized = false;
 
 function Restaurant(obj, marker) {
     this._id = obj["_id"];
@@ -97,7 +98,10 @@ function putMarker(obj) {
     // according to GeoJSON fromat geodata must be stored in format [lng, lat] 
     var marker = DG.marker([obj["loc"][1], obj["loc"][0]],{icon: iconMarker})
         .addTo(map)
-        .bindPopup(getContent(obj),{maxWidth: 500})
+        .bindPopup(getContent(obj),{
+            maxWidth: 500,
+            minWidth: 300,
+            sprawling: true})
         .bindLabel(obj["name"]);
     marker.on('click', function() {
         curRestIndex = obj["_id"];
@@ -107,11 +111,18 @@ function putMarker(obj) {
 
 //generate content for marker popup
 function getContent(obj) {
-    return '<b>' + obj["name"] + '</b><br>' +
-        obj["description"] + '<br><br>' +
+    result =
+        '<b>' + obj["name"] + '</b>' +
+        '<br>' + obj["description"] + '<br><br>' +
         '<b>Address: </b>' + obj["address"] + '</br>' +
         '<b>Phones: </b>' + obj["telephone"] + '</br>' +
         '<b>Working hours: </b>' + obj["workingHours"] + '</br></br><a onclick="openRestInfoPage()">View more</a>';
+    if (autorized){
+        result +=
+            '<button type="button" class="btn btn-primary popupbtn" onclick="editRestaurant(\'' + obj["_id"] + '\')">Edit</button>' +
+        '<button type="button" class="btn btn-danger popupbtn" onclick="deleteRestaurant(\'' + obj["_id"] + '\')">Delete</button>' + '<br>';
+    }
+    return result;
      //   '<b>Working hours: </b>' + obj["workingHours"] + '</br></br><a onclick="openRestInfoPage(\'' + obj["_id"] + '\')">View more</a>';
 }
 
@@ -138,6 +149,27 @@ function openRestInfoPage() {
     $('#info_container').css({"visibility": "visible", "display": "block"});
     $('#mapButton').removeAttr("active");
     marker.closePopup();
+}
+
+function editRestaurant(_id){
+    editUrl = "/restaurant/" + _id + "/edit";
+    window.open(editUrl, "_self", false);
+}
+
+function deleteRestaurant(_id){
+    editUrl = "/restaurant/" + _id + "/delete";
+    $.ajax({
+        type: "DELETE",
+        url: editUrl,
+        success: function () {
+            restaurantList.get(_id).marker.remove();
+            restaurantList.delete(_id);
+            $('#'+_id).remove();
+        },
+        error: function () {
+            alert('Can not connect to the server');
+        }
+    });
 }
 
 function createNewMarker(){
@@ -199,6 +231,10 @@ function updateRatingPage(){
                 + '</button>');
         }
     }
+}
+
+function setAutorized(){
+    autorized=true;
 }
 
 // no needs today coz of react.js
