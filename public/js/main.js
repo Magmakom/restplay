@@ -94,7 +94,8 @@ function getMarks() {
 }
 
 function putMarker(obj) {
-    var marker = DG.marker([obj["lat"], obj["lng"]],{icon: iconMarker})
+    // according to GeoJSON fromat geodata must be stored in format [lng, lat] 
+    var marker = DG.marker([obj["loc"][1], obj["loc"][0]],{icon: iconMarker})
         .addTo(map)
         .bindPopup(getContent(obj),{maxWidth: 500})
         .bindLabel(obj["name"]);

@@ -1,5 +1,6 @@
 package models
 
+import scala.collection.Seq
 import reactivemongo.bson.BSONObjectID
 
 case class Restaurant(
@@ -9,8 +10,7 @@ case class Restaurant(
   description: String,
   address: String,
   workingHours: String,
-  lat: Double,
-  lng: Double
+  loc: Seq[Double]
 )
 
 object Restaurant{
@@ -33,8 +33,7 @@ object Restaurant{
       "description" -> text,
       "address" -> text,
       "workingHours" -> text,
-      "lat" -> of[Double],
-      "lng" -> of[Double]
+      "loc" -> seq(of[Double])
     )(Restaurant.apply)(Restaurant.unapply)
   )
 
