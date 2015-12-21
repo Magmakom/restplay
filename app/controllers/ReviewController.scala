@@ -21,6 +21,17 @@ class ReviewController @Inject() (
   val env: Environment[User, CookieAuthenticator])
   extends Silhouette[User, CookieAuthenticator] {
 
+  def findAllAsJson = Action.async { request =>
+    ReviewRepository.findAll().map { result =>
+      Ok(Json.toJson(result))
+    }
+  }  
+
+  def findByIdAsJson(id: String) = Action.async { request =>
+    ReviewRepository.findById(id).map  { result =>
+      Ok(Json.toJson(result))
+    }
+  }
 
   def create = SecuredAction.async { implicit request =>
     Review.form.bindFromRequest.fold(
@@ -29,7 +40,6 @@ class ReviewController @Inject() (
       // if no error, then insert the article into the 'reviews' collection
       review => ReviewRepository.insert(review.copy())
     ).map(_ => Redirect(routes.Application.index))
-
   }
 
   def edit(id: String) = SecuredAction.async { implicit request =>
@@ -42,10 +52,7 @@ class ReviewController @Inject() (
         Ok(views.html.editReview(Some(id), errors))),
 
       review => {
-        // create a modifier document, ie a document that contains the update operations to run onto the documents matching the query
         val modifier = Json.obj(
-          // this modifier will set the fields
-          // 'updateDate', 'title', 'content', and 'publisher'
           "$set" -> Json.obj(
             // "updateDate" -> BSONDateTime(new DateTime().getMillis),
             "title" -> review.title,
@@ -65,12 +72,6 @@ class ReviewController @Inject() (
   def delete(id: String) = SecuredAction.async {
     import reactivemongo.bson.BSONObjectID
     ReviewRepository.removeById(BSONObjectID(id)).map(_ => Ok).recover { case _ => InternalServerError }
-  }
-
-  def findAllAsJson = Action.async { request =>
-    ReviewRepository.findAll().map { result =>
-      Ok(Json.toJson(result))
-    }
   }
 
   def showCreationForm = SecuredAction.async  { request =>

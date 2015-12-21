@@ -1,17 +1,25 @@
 package controllers
 
-import models.Restaurant
-import play.api.Play.current
-import play.api.i18n.Messages.Implicits._
-import play.api.libs.json._
-import play.api.mvc._
-import repository.RestaurantRepository
-
+import javax.inject.Inject
+import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class RestaurantController extends Controller {
+import play.api.Play.current
+import play.api.i18n.MessagesApi
+import play.api.libs.json._
+import play.api.mvc._
+import com.mohiva.play.silhouette.api.{ Environment, Silhouette }
+import com.mohiva.play.silhouette.impl.authenticators.CookieAuthenticator
 
-  val jsonTransformer = (__).json.update( (__ \ '_id).json.copyFrom( (__ \ '_id \ '$oid).json.pick ) ) //'
+import models.{ User, Restaurant }
+import repository.RestaurantRepository
+
+class RestaurantController @Inject() (
+  val messagesApi: MessagesApi,
+  val env: Environment[User, CookieAuthenticator])
+  extends Silhouette[User, CookieAuthenticator] {
+
+  private val jsonTransformer = (__).json.update( (__ \ '_id).json.copyFrom( (__ \ '_id \ '$oid).json.pick ) ) //'
 
   def findAllAsJson = Action.async { request =>
     RestaurantRepository.findAll().map { result =>
@@ -31,15 +39,51 @@ class RestaurantController extends Controller {
     }
   }
 
-  def showCreationForm = Action { request =>
-    Ok(views.html.editRestaurant(None, Restaurant.form))
+  def create = SecuredAction.async { implicit request =>
+    Restaurant.form.bindFromRequest.fold(
+      errors => Future.successful(
+        Ok(views.html.createRestaurant(errors, 0 , 0))),
+      restaurant => RestaurantRepository.insert(restaurant.copy())
+    ).map(_ => Redirect(routes.Application.index))
   }
 
-  def showEditForm(id: String) = Action.async { request =>
+  def edit(id: String) = SecuredAction.async { implicit request =>
+    import play.modules.reactivemongo.json.BSONFormats._
+    import play.modules.reactivemongo.json._
+    import reactivemongo.bson.BSONObjectID
+
+    Restaurant.form.bindFromRequest.fold(
+      errors => Future.successful(
+        Ok(views.html.editRestaurant(id, errors))),
+      restraurant => {
+        val modifier = Json.obj(
+          "$set" -> Json.obj(
+            "name" -> restraurant.name,
+            "telephone" -> restraurant.telephone,
+            "description" -> restraurant.description,
+            "address" -> restraurant.address,
+            "workingHours" -> restraurant.workingHours))
+        RestaurantRepository.updateById(BSONObjectID(id), modifier).map { _ =>
+          Redirect(routes.Application.index)
+        }
+      }
+    )
+  }
+
+  def delete(id: String) = SecuredAction.async {
+    import reactivemongo.bson.BSONObjectID
+    RestaurantRepository.removeById(BSONObjectID(id)).map(_ => Ok).recover { case _ => InternalServerError }
+  }
+
+  def showCreationForm(lat: Double, lng: Double) = SecuredAction.async  { request =>
+    Future.successful(Ok(views.html.createRestaurant(Restaurant.form, lat, lng)))
+  }
+
+  def showEditForm(id: String) = SecuredAction.async { request =>
     RestaurantRepository.findById(id).map  { result =>
       result match {
         case None => Redirect(routes.Application.index)
-        case Some(_) => Ok(views.html.editRestaurant(Some(id), Restaurant.form.fill(result.get)))
+        case Some(_) => Ok(views.html.editRestaurant(id, Restaurant.form.fill(result.get)))
       }
     }
   }

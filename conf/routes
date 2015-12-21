@@ -3,22 +3,26 @@
 # ~~~~
 
 # Home page
-GET     /                               controllers.Application.index
-GET     /api/restaurant                 controllers.RestaurantController.findAllAsJson
-GET     /api/restaurant/:id                controllers.RestaurantController.findByIdAsJson(id)
-GET     /api/review                    controllers.ReviewController.findAllAsJson
+GET     /                          controllers.Application.index
+GET     /api/restaurant            controllers.RestaurantController.findAllAsJson
+GET     /api/restaurant/:id        controllers.RestaurantController.findByIdAsJson(id)
+GET     /api/review                controllers.ReviewController.findAllAsJson
+GET     /api/review/:id            controllers.ReviewController.findByIdAsJson(id)
 
-GET     /restaurant/new             controllers.RestaurantController.showCreationForm
-GET     /review/new                     controllers.ReviewController.showCreationForm
-POST   /review/new                     controllers.ReviewController.create
-GET     /review/:id/edit                     controllers.ReviewController.showEditForm(id)
-POST   /review/:id/edit                   controllers.ReviewController.edit(id)
-POST   /review/:id/delete                controllers.ReviewController.delete(id)
+GET     /restaurant/new            controllers.RestaurantController.showCreationForm(lat: Double, lng: Double)
+POST    /restaurant/new            controllers.RestaurantController.create
+GET     /restaurant/:id/edit       controllers.RestaurantController.showEditForm(id)
+POST    /restaurant/:id/edit       controllers.RestaurantController.edit(id)
+DELETE  /restaurant/:id/delete     controllers.RestaurantController.delete(id)
 
+GET     /review/new                controllers.ReviewController.showCreationForm
+POST    /review/new                controllers.ReviewController.create
+GET     /review/:id/edit           controllers.ReviewController.showEditForm(id)
+POST    /review/:id/edit           controllers.ReviewController.edit(id)
+DELETE  /review/:id/delete         controllers.ReviewController.delete(id)
 
-GET     /signOut                        controllers.Application.signOut
-POST    /authenticate/credentials       controllers.AuthController.authenticate
+GET     /signOut                   controllers.Application.signOut
+POST    /authenticate/credentials  controllers.AuthController.authenticate
 
-
-# Map static resources from the /public folder to the /assets URL path
-GET     /*file                          controllers.Assets.versioned(path="/public", file: Asset)
+# Map static resources from the  /public folder to the /assets URL path
+GET     /*file                     controllers.Assets.versioned(path="/public", file: Asset)

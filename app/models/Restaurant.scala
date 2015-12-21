@@ -27,7 +27,7 @@ object Restaurant{
 
   val form = Form(
     mapping(
-      "id" -> of[BSONObjectID],
+      "id" -> ignored(BSONObjectID.generate),
       "name" -> text,
       "telephone" -> text,
       "description" -> text,

@@ -1,23 +1,18 @@
-@(id: Option[String], form: Form[models.Restaurant])(implicit lang: play.api.i18n.Messages)
+@(id: String, restraurantForm: Form[models.Restaurant])(implicit lang: play.api.i18n.Messages)
+
+@import helper._
 
 @layout("Restaurant rating") {
-    <h2>
-        @if(!id.isDefined) {
-            Add
-        }else{
-            Edit
-        } a review
-    </h2>
-    @helper.inputText(form("id"))
-    @helper.inputText(form("name"))
-    @helper.inputText(form("telephone"))
-    @helper.textarea(form("description"))
-    @helper.inputText(form("address"))
-    @helper.inputText(form("address"))
-    @helper.inputText(form("workingHours"))
-    @helper.inputText(form("lat"))
-    @helper.inputText(form("lng"))
+  <div class="row fill outer-container">
+  @form(action = routes.RestaurantController.edit(id)) {
+    @inputText(restraurantForm("name"))
+    @inputText(restraurantForm("telephone"))
+    @textarea(restraurantForm("description"))
+    @inputText(restraurantForm("address"))
+    @inputText(restraurantForm("workingHours"))
     <div class="form-actions">
         <input class="btn btn-primary" type="submit">
     </div>
+  }
+  </div>
 }
