@@ -40,10 +40,14 @@ class RestaurantController @Inject() (
   }
 
   def create = SecuredAction.async { implicit request =>
+    import reactivemongo.bson.BSONObjectID
+
     Restaurant.form.bindFromRequest.fold(
       errors => Future.successful(
         Ok(views.html.createRestaurant(errors, 0 , 0))),
-      restaurant => RestaurantRepository.insert(restaurant.copy())
+      restaurant => RestaurantRepository.insert(restaurant.copy(
+        _id = BSONObjectID.generate
+      ))
     ).map(_ => Redirect(routes.Application.index))
   }
 
