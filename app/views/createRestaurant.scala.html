@@ -5,13 +5,13 @@
 
 @layout("Add a new restaurant") {
 <div class="row fill outer-container">
-    <div class="form_createEdit">
+    <div class="inputForm" id="inputForm">
     @b3.form(routes.RestaurantController.create) {
-        @b3.text(restraurantForm("name"), '_label -> "name")
-        @b3.text(restraurantForm("telephone"), '_label -> "telephone")
-        @b3.textarea(restraurantForm("description"), '_label -> "description", 'rows -> 7 )
-        @b3.text(restraurantForm("address"), '_label -> "address")
-        @b3.text(restraurantForm("workingHours"), '_label -> "workingHours")
+        @b3.text(restraurantForm("name"), '_label -> "Name")
+        @b3.text(restraurantForm("telephone"), '_label -> "Telephone")
+        @b3.textarea(restraurantForm("description"), '_label -> "Description", 'rows -> 15 )
+        @b3.text(restraurantForm("address"), '_label -> "Address")
+        @b3.text(restraurantForm("workingHours"), '_label -> "Working hours")
         <input type="hidden" name="loc[0]" value=@lng>
         <input type="hidden" name="loc[1]" value=@lat>
         <div class="form-actions">
