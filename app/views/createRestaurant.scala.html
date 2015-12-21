@@ -1,20 +1,23 @@
 @(restraurantForm: Form[models.Restaurant], lat: Double, lng: Double)(implicit lang: play.api.i18n.Messages)
 
 @import helper._
+@import b3.vertical.fieldConstructor
 
 @layout("Add a new restaurant") {
 <div class="row fill outer-container">
-  @form(action = routes.RestaurantController.create) {
-      @inputText(restraurantForm("name"))
-      @inputText(restraurantForm("telephone"))
-      @textarea(restraurantForm("description"))
-      @inputText(restraurantForm("address"))
-      @inputText(restraurantForm("workingHours"))
-      <input type="hidden" name="loc[0]" value=@lng>
-      <input type="hidden" name="loc[1]" value=@lat>
-      <div class="form-actions">
-          <input class="btn btn-primary" type="submit">
-      </div>
-  }
+    <div class="form_createEdit">
+    @b3.form(routes.RestaurantController.create) {
+        @b3.text(restraurantForm("name"), '_label -> "name")
+        @b3.text(restraurantForm("telephone"), '_label -> "telephone")
+        @b3.textarea(restraurantForm("description"), '_label -> "description", 'rows -> 7 )
+        @b3.text(restraurantForm("address"), '_label -> "address")
+        @b3.text(restraurantForm("workingHours"), '_label -> "workingHours")
+        <input type="hidden" name="loc[0]" value=@lng>
+        <input type="hidden" name="loc[1]" value=@lat>
+        <div class="form-actions">
+            <input class="btn btn-primary" type="submit">
+        </div>
+    }
+    </div>
 </div>
 }
