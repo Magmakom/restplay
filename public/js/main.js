@@ -42,7 +42,21 @@ $(function () {
 });
 
 function redirectReview(){
-    console.log(window.location.href);
+    href = window.location.href;
+    reviewId = href.split("/review/")[1];
+    if (reviewId !== null && reviewId !== undefined){
+        reviewUrl = "/api/review/" + reviewId;
+        $.ajax({
+            type: "GET",
+            url: reviewUrl,
+            success: function (data) {
+                openContainer(data);
+            },
+            error: function () {
+                alert('Can not connect to the server');
+            }
+        });
+    }
 }
 
 function initMap() {
@@ -148,21 +162,26 @@ function targetRestaurant(index) {
     openRestInfoPage();
 }
 
-function openRestInfoPage() {
+function openContainer(data){
+    review = data;
+    curRestIndex = review["restaurantId"]["$oid"];
     marker = restaurantList.get(curRestIndex).marker;
     map.setView(marker.getLatLng());
     $('#info_box').css({"visibility": "visible", "display": "block"});
     $('#info_container').css({"visibility": "visible", "display": "block"});
     $('#mapButton').removeAttr("active");
     marker.closePopup();
+    setUrl(restaurantList.get(curRestIndex).name, "/review/" + review["_id"]["$oid"]);
+    reviewMaping(restaurantList.get(curRestIndex), review);
+}
+
+function openRestInfoPage() {
     reviewUrl = "/api/review/by-rest/" + restaurantList.get(curRestIndex)._id;
     $.ajax({
         type: "GET",
         url: reviewUrl,
         success: function (data) {
-            review = data;
-            setUrl(restaurantList.get(curRestIndex).name, "/review/" + review["_id"]["$oid"]);
-            reviewMaping(restaurantList.get(curRestIndex), review);
+            openContainer(data);
         },
         error: function () {
             alert('Can not connect to the server');
