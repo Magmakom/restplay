@@ -25,6 +25,9 @@ class Application @Inject() (
     Future.successful(Ok(views.html.index(request.identity)))
   }
 
+  def showReview(id: String) = UserAwareAction.async { implicit request =>
+    Future.successful(Ok(views.html.index(request.identity)))
+  }
   /**
    * Handles the Sign In action.
    *
