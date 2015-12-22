@@ -7,5 +7,5 @@ import reactivemongo.api._
 object MongoEnv {
   val driver = new MongoDriver
   val connection = driver.connection(List("localhost"))
-  def db: DB = connection("restplay")
+  val db = connection("restplay")
 }

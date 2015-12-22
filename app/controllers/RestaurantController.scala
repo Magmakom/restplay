@@ -13,9 +13,11 @@ import com.mohiva.play.silhouette.impl.authenticators.CookieAuthenticator
 
 import models.{ User, Restaurant }
 import repository.RestaurantRepository
+import services.GalleryService
 
 class RestaurantController @Inject() (
   val messagesApi: MessagesApi,
+  val galleryService: GalleryService,
   val env: Environment[User, CookieAuthenticator])
   extends Silhouette[User, CookieAuthenticator] {
 
@@ -84,12 +86,21 @@ class RestaurantController @Inject() (
   }
 
   def showEditForm(id: String) = SecuredAction.async { request =>
-    RestaurantRepository.findById(id).map  { result =>
-      result match {
-        case None => Redirect(routes.Application.index)
-        case Some(_) => Ok(views.html.editRestaurant(id, Restaurant.form.fill(result.get)))
-      }
-    }
+    // RestaurantRepository.findById(id).map  { result =>
+    //   result match {
+    //     case None => Redirect(routes.Application.index)
+    //     case Some(_) => {
+    //       galleryService.getFilesWithId(id).map {
+    //         case filesWithId => Ok(views.html.editRestaurant(id, Restaurant.form.fill(result.get), Some(filesWithId)))
+    //       }
+    //       Ok(views.html.editRestaurant(id, Restaurant.form.fill(result.get)))
+    //     }
+    //   }
+    // }
+    for {
+      futRestaurant <- RestaurantRepository.findById(id)
+      futFiles <- galleryService.getFilesWithId(id)
+    } yield Ok(views.html.editRestaurant(id, Restaurant.form.fill(futRestaurant.get), Some(futFiles)))
   }
 
 }
