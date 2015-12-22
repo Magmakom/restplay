@@ -13,7 +13,8 @@
             <div id="main_container">
                 <div id="map"></div>
                 @if(user.isDefined) {
-                    <button type="button" class="btn btn-danger" id="addRestButton" onclick="createNewMarker()">
+                    <script>setAutorized()</script>
+                    <button type="button" class="btn btn-success" id="addRestButton" onclick="createNewMarker()">
                         New restaurant</button>
                 }
                 <div id="info_box" style="visibility: hidden; display: none;"></div>

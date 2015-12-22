@@ -4,7 +4,7 @@ let RestaurantListItem = React.createClass({
     },
     render: function() {
         return (
-            <button className="list-group-item" type="button" onClick={this.onClick}>
+            <button className="list-group-item" id={this.props.data.index} type="button" onClick={this.onClick}>
                  <span className="badge">7</span>
                  {this.props.data.name}
             </button>

@@ -1,41 +1,35 @@
 @(reviewForm: Form[models.Review], restaurantId: String)(implicit lang: play.api.i18n.Messages)
 
 @import helper._
+@import b3.vertical.fieldConstructor
 
 @layout("Add a new review") {
-<div class="row fill outer-container">
-  @form(action = routes.ReviewController.create) {
-    @inputText(reviewForm("title"))
-    @textarea(reviewForm("content"))
-    @select(reviewForm("cuisine"), helper.options("1" -> "1",  "2" -> "2", "3" -> "3", "4" -> "4", "5" -> "5"))
-    @select(reviewForm("interior"), helper.options("1" -> "1",  "2" -> "2", "3" -> "3", "4" -> "4", "5" -> "5"))
-    @select(reviewForm("service"), helper.options("1" -> "1",  "2" -> "2", "3" -> "3", "4" -> "4", "5" -> "5"))
-    @repeat(reviewForm("labels"), min = 1) { labelField =>
-        @inputText(labelField("text"))
-        @select(
-            labelField("color"),
-            helper.options(
-                "#ff0000" -> "Red",
-                "#000000" -> "Black",
-                "#0000ff" -> "Blue",
-                "#008000" -> "Green",
-                "#00ff00" -> "Lime",
-                "#ffff00" -> "Yellow",
-                "#ffffff" -> "White")
-        )
-        @select(
-            labelField("isPositive"),
-            helper.options("true" -> "Yes", "false" -> "No")
-        )
-    }
-    <input type="hidden" name="restaurantId" value=@restaurantId>
-    <div class="form-actions">
-        <input class="btn btn-primary" type="submit">
+    <div class="row fill outer-container">
+        <div class="inputForm" id="inputForm">
+        @b3.form(routes.ReviewController.create) {
+            @b3.text(reviewForm("title"), '_label -> "Title")
+            @b3.textarea(reviewForm("content"), '_label -> "Content")
+            @b3.select( reviewForm("cuisine"), options = Seq("1" -> "1",  "2" -> "2", "3" -> "3", "4" -> "4", "5" -> "5"), '_label -> "Cuisine" )
+            @b3.select( reviewForm("interior"), options = Seq("1" -> "1",  "2" -> "2", "3" -> "3", "4" -> "4", "5" -> "5"), '_label -> "Interior" )
+            @b3.select( reviewForm("service"), options = Seq("1" -> "1",  "2" -> "2", "3" -> "3", "4" -> "4", "5" -> "5"), '_label -> "Service" )
+            @repeat(reviewForm("labels"), min = 1) { labelField =>
+                @b3.text(labelField("text"), '_label -> "Title")
+                @b3.select(labelField("color"), options = Seq(
+                    "#ff0000" -> "Red",
+                    "#000000" -> "Black",
+                    "#0000ff" -> "Blue",
+                    "#008000" -> "Green",
+                    "#00ff00" -> "Lime",
+                    "#ffff00" -> "Yellow",
+                    "#ffffff" -> "White"), '_label -> "Color" )
+                @b3.select(labelField("isPositive"), options = Seq("true" -> "Yes", "false" -> "No"), '_label -> "Is positive" )
+            }
+            <input type="hidden" name="restaurantId" value=@restaurantId>
+            <div class="form-actions">
+                <input class="btn btn-primary" type="submit">
+            </div>
+        }
+        </div>
     </div>
-  }
-</div>
 }
-
-
-
 
