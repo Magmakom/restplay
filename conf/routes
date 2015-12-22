@@ -7,6 +7,7 @@ GET     /                          controllers.Application.index
 GET     /api/restaurant            controllers.RestaurantController.findAllAsJson
 GET     /api/restaurant/:id        controllers.RestaurantController.findByIdAsJson(id)
 GET     /api/review                controllers.ReviewController.findAllAsJson
+GET     /api/review/by-rest/:id    controllers.ReviewController.findLatestReviewAsJson(id)
 GET     /api/review/:id            controllers.ReviewController.findByIdAsJson(id)
 
 GET     /restaurant/new            controllers.RestaurantController.showCreationForm(lat: Double, lng: Double)
@@ -24,5 +25,5 @@ DELETE  /review/:id/delete         controllers.ReviewController.delete(id)
 GET     /signOut                   controllers.Application.signOut
 POST    /authenticate/credentials  controllers.AuthController.authenticate
 
-# Map static resources from the  /public folder to the /assets URL path
+# Map static resources from the /public folder to the /assets URL path
 GET     /*file                     controllers.Assets.versioned(path="/public", file: Asset)

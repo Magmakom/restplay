@@ -33,6 +33,12 @@ class ReviewController @Inject() (
     }
   }
 
+  def findLatestReviewAsJson(id: String) = Action.async { request =>
+    ReviewRepository.findLatestReview(id).map  { result =>
+      Ok(Json.toJson(result))
+    }
+  }
+
   def create = SecuredAction.async { implicit request =>
     Review.form.bindFromRequest.fold(
       errors => Future.successful(
