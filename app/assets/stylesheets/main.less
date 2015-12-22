@@ -23,6 +23,48 @@
     margin-bottom: 10px;
 }
 
+
+
+#restView{
+    margin: auto;
+    width: 90%;
+    margin: 0px;
+    padding: 0px;
+    font-size: 14px;
+    text-indent: 20px;
+}
+#reviewSlider {
+    width: 100%;
+    color: #66666;
+    font-family: Georgia;
+    font-size: 20px;
+}
+.reviewHeader {
+    width: 100%;
+    border: 1px solid #cccccc;
+    padding: 8px;
+    margin-top: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+.reviewHeader:hover {
+    color: #666666;
+}
+.reviewContent {
+    overflow: hidden;
+}
+.reviewText {
+    width: 100%;
+    border: 1px solid #cccccc;
+    border-top: none;
+    padding: 15px;
+    text-align: center;
+    background: #eeeeee;
+    font-size: 14px;
+}
+
+
+
 .fill {
     height: @height2;
     min-height: @height2;
@@ -48,11 +90,15 @@ div {
         height: 100%;
     }
     &#info_container{
-        margin-top: 20px;
+        margin-top: 0px;
         margin-left: 50px;
+        margin-bottom: 0px;
+        padding-left: 20px;
         position: fixed;
         width: 80%;
         height: 90%;
+        visibility: hidden;
+        display: none;
     }
     &#info_box{
         margin-top: 20px;
