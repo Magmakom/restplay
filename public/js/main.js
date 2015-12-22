@@ -41,6 +41,10 @@ $(function () {
     });
 });
 
+function redirectReview(){
+    console.log(window.location.href);
+}
+
 function initMap() {
     $('#info_box').css({"visibility": "hidden", "display": "none"});
     $('#info_container').css({"visibility": "hidden", "display": "none"});
@@ -65,7 +69,8 @@ function initMap() {
             iconUrl: '/images/newmarker.svg',
             iconSize: [36,70149, 48,93516]
         });
-        getMarks()
+        getMarks();
+        redirectReview();
     });
 }
 
@@ -150,8 +155,29 @@ function openRestInfoPage() {
     $('#info_container').css({"visibility": "visible", "display": "block"});
     $('#mapButton').removeAttr("active");
     marker.closePopup();
-    setUrl(restaurantList.get(curRestIndex).name, "/api/review/by-rest/"+restaurantList.get(curRestIndex)._id);
+    reviewUrl = "/api/review/by-rest/" + restaurantList.get(curRestIndex)._id;
+    $.ajax({
+        type: "GET",
+        url: reviewUrl,
+        success: function (data) {
+            review = data;
+            setUrl(restaurantList.get(curRestIndex).name, "/review/" + review["_id"]["$oid"]);
+            reviewMaping(restaurantList.get(curRestIndex), review);
+        },
+        error: function () {
+            alert('Can not connect to the server');
+        }
+    });
    // slider('reviewSlider', 0);
+}
+
+function reviewMaping(restaurant, review){
+    $('.restName').text(restaurant["name"]);
+    $('#rateCuisine').text(review["cuisine"] + "/5");
+    $('#rateInterior').text(review["interior"] + "/5");
+    $('#rateService').text(review["service"] + "/5");
+    $('#rateTotal').text(review["resultMark"] + "/5");
+    $('#restView').text(review["content"]);
 }
 
 function setUrl(title, newUrl){
