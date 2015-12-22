@@ -197,6 +197,16 @@ function reviewMaping(restaurant, review){
     $('#rateService').text(review["service"] + "/5");
     $('#rateTotal').text(review["resultMark"] + "/5");
     $('#restView').text(review["content"]);
+    labels = review["labels"];
+    $('.reviewBadge').remove();
+    if (labels !== undefined && labels!==null) {
+        for (i = 0; i < labels.length; i++) {
+            $('.labels').append(
+                '<h4><span class="reviewBadge badge" id="label-' + i + '">' + labels[i]["text"] + '</span></h4>'
+            );
+            $('#label-' + i).css("background-color", labels[i]["color"]);
+        }
+    }
 }
 
 function setUrl(title, newUrl){
