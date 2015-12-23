@@ -22,7 +22,8 @@ import play.api.libs.ws.WSClient
 import models.User
 import repository._
 import services.UserService
-
+import services.GalleryService
+import controllers.GalleryController
 /**
  * The Guice module which wires all Silhouette dependencies.
  */
@@ -32,6 +33,7 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
    * Configures the module.
    */
   def configure() {
+    bind[GalleryService].to[GalleryController]
     bind[UserService].to[UserRepository]
     bind[DelegableAuthInfoDAO[PasswordInfo]].to[PasswordInfoRepository]
     bind[CacheLayer].to[PlayCacheLayer]

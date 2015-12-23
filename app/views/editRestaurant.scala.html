@@ -1,18 +1,57 @@
-@(id: String, restraurantForm: Form[models.Restaurant])(implicit lang: play.api.i18n.Messages)
+@(id: String, restraurantForm: Form[models.Restaurant], files: Option[List[(play.api.libs.json.JsString, reactivemongo.api.gridfs.ReadFile[play.modules.reactivemongo.json.JSONSerializationPack.type, play.api.libs.json.JsString])]] = None)(implicit lang: play.api.i18n.Messages)
 
 @import helper._
+@import b3.vertical.fieldConstructor
 
 @layout("Edit restaurant") {
-<div class="row fill outer-container">
-  @form(action = routes.RestaurantController.edit(id)) {
-    @inputText(restraurantForm("name"))
-    @inputText(restraurantForm("telephone"))
-    @textarea(restraurantForm("description"))
-    @inputText(restraurantForm("address"))
-    @inputText(restraurantForm("workingHours"))
-    <div class="form-actions">
-        <input class="btn btn-primary" type="submit">
-    </div>
-  }
+  <script>
+  $(function() {
+  	$('a.delete').click(function(e) {
+  		if(confirm('Are you sure to delete this?')) {
+  			var href = $(this).attr('href')
+  			$.ajax({
+  				type: 'DELETE',
+  				url: href,
+  				success: function() {
+  					document.location.reload()
+  				}
+  			})
+  		}
+  		e.preventDefault();
+  		return false
+  	})
+  })
+  </script>
+  <style>
+  a.delete { color: #CC0000; }
+</style>
+<div class="row fill outer-container" style="padding-top: 60px;">
+  <div class="col-sm-8">
+    @form(action = routes.RestaurantController.edit(id)) {
+      @b3.text(restraurantForm("name"), '_label -> "Name")
+      @b3.text(restraurantForm("telephone"), '_label -> "Telephone")
+      @b3.textarea(restraurantForm("description"), '_label -> "Description", 'rows -> 15 )
+      @b3.text(restraurantForm("address"), '_label -> "Address")
+      @b3.text(restraurantForm("workingHours"), '_label -> "Working hours")
+      <div class="form-actions">
+          <input class="btn btn-primary" type="submit">
+      </div>
+    }
+  </div>
+  <div class="col-sm-4">
+    @if(files.isDefined) {
+      @files.get.map { file =>
+          <img width="100%" src="@routes.GalleryController.getPhoto(file._1.value)?inline=true">
+          <a class="delete" href="@routes.GalleryController.removePhoto(file._1.value)">delete</a>
+          <br>
+      }
+    }
+    @helper.form(action = routes.GalleryController.savePhoto(id), 'enctype -> "multipart/form-data") {
+      <input class='btn btn-dafault' type="file" name="picture">
+      <div>
+        <input type="submit" class="btn btn-primary">
+      </div>
+    }
+  </div>
 </div>
 }

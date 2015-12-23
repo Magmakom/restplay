@@ -23,6 +23,11 @@ GET     /review/:id/edit           controllers.ReviewController.showEditForm(id)
 POST    /review/:id/edit           controllers.ReviewController.edit(id)
 DELETE  /review/:id/delete         controllers.ReviewController.delete(id)
 
+GET     /gallery/:id            controllers.GalleryController.getNameListAsJson(id: String)
+POST     /gallery/:id            controllers.GalleryController.savePhoto(id: String)
+GET     /photo/:id            controllers.GalleryController.getPhoto(id: String)
+DELETE     /photo/:id            controllers.GalleryController.removePhoto(id: String)
+
 GET     /signOut                   controllers.Application.signOut
 POST    /authenticate/credentials  controllers.AuthController.authenticate
 
