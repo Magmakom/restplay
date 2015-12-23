@@ -197,6 +197,8 @@ function openRestInfoPage() {
 
 function reviewMaping(restaurant, review){
     $('.targetUrl').attr('content', 'http://restplay.pluseq.com/review/' + review["_id"]["$oid"]);
+    $("meta[property='og\\:url']").attr("content", 'http://restplay.pluseq.com/review/' + review["_id"]["$oid"]);
+    console.log($("meta[property='og:url']").attr("content"));
     $('.restName').text(restaurant["name"]);
     $('#rateCuisine').text(review["cuisine"] + "/5");
     $('#rateInterior').text(review["interior"] + "/5");
@@ -212,6 +214,14 @@ function reviewMaping(restaurant, review){
             );
             $('#label-' + i).css("background-color", labels[i]["color"]);
         }
+    }
+    if (window.pluso)if (typeof window.pluso.start == "function") return;
+    if (window.ifpluso==undefined) { window.ifpluso = 1;
+        var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
+        s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true;
+        s.src = ('https:' == window.location.protocol ? 'https' : 'http')  + '://share.pluso.ru/pluso-like.js';
+        var h=d[g]('body')[0];
+        h.appendChild(s);
     }
 }
 
