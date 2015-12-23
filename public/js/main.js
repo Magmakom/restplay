@@ -164,15 +164,15 @@ function targetRestaurant(index) {
 
 function openContainer(data){
     review = data;
-    curRestIndex = review["restaurantId"]["$oid"];
-    marker = restaurantList.get(curRestIndex).marker;
-    map.setView(marker.getLatLng());
-    $('#info_box').css({"visibility": "visible", "display": "block"});
-    $('#info_container').css({"visibility": "visible", "display": "block"});
-    $('#mapButton').removeAttr("active");
-    marker.closePopup();
-    setUrl(restaurantList.get(curRestIndex).name, "/review/" + review["_id"]["$oid"]);
-    reviewMaping(restaurantList.get(curRestIndex), review);
+        curRestIndex = review["restaurantId"]["$oid"];
+        marker = restaurantList.get(curRestIndex).marker;
+        map.setView(marker.getLatLng());
+        $('#info_box').css({"visibility": "visible", "display": "block"});
+        $('#info_container').css({"visibility": "visible", "display": "block"});
+        $('#mapButton').removeAttr("active");
+        marker.closePopup();
+        setUrl(restaurantList.get(curRestIndex).name, "/review/" + review["_id"]["$oid"]);
+        reviewMaping(restaurantList.get(curRestIndex), review);
 }
 
 function openRestInfoPage() {
@@ -181,7 +181,12 @@ function openRestInfoPage() {
         type: "GET",
         url: reviewUrl,
         success: function (data) {
-            openContainer(data);
+            if (data!==null&&data!==undefined){
+                openContainer(data);
+            }
+            else{
+                createReview(restaurantList.get(curRestIndex)._id);
+            }
         },
         error: function () {
             alert('Can not connect to the server');
@@ -214,16 +219,22 @@ function setUrl(title, newUrl){
     window.history.pushState("string", title, newUrl);
 }
 
+function createReview(restaurantId){
+    console.log(restaurantId);
+    targetUrl = "/review/new" + "?" + "restaurantId=" + restaurantId;
+    window.open(targetUrl, "_self", false);
+}
+
 function editRestaurant(_id){
-    editUrl = "/restaurant/" + _id + "/edit";
-    window.open(editUrl, "_self", false);
+    targetUrl = "/restaurant/" + _id + "/edit";
+    window.open(targetUrl, "_self", false);
 }
 
 function deleteRestaurant(_id){
-    editUrl = "/restaurant/" + _id + "/delete";
+    targetUrl = "/restaurant/" + _id + "/delete";
     $.ajax({
         type: "DELETE",
-        url: editUrl,
+        url: targetUrl,
         success: function () {
             restaurantList.get(_id).marker.remove();
             restaurantList.delete(_id);
@@ -249,8 +260,8 @@ function createNewMarker(){
 }
 
 function openEditrestaurantPage(marker){
-    editUrl = "/restaurant/new" + "?" + "lat=" + marker.getLatLng().lat + "&lng=" + marker.getLatLng().lng;
-    window.open(editUrl, "_self", false);
+    targetUrl = "/restaurant/new" + "?" + "lat=" + marker.getLatLng().lat + "&lng=" + marker.getLatLng().lng;
+    window.open(targetUrl, "_self", false);
 }
 
 function updateRatingPage(){

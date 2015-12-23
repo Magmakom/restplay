@@ -13,7 +13,7 @@
             @b3.select( reviewForm("interior"), options = Seq("1" -> "1",  "2" -> "2", "3" -> "3", "4" -> "4", "5" -> "5"), '_label -> "Interior" )
             @b3.select( reviewForm("service"), options = Seq("1" -> "1",  "2" -> "2", "3" -> "3", "4" -> "4", "5" -> "5"), '_label -> "Service" )
             @repeat(reviewForm("labels"), min = 1) { labelField =>
-                @b3.text(labelField("text"), '_label -> "Title")
+                @b3.text(labelField("text"), '_label -> "Label title")
                 @b3.select(labelField("color"), options = Seq(
                     "#ff0000" -> "Red",
                     "#000000" -> "Black",
