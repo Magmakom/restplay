@@ -191,6 +191,7 @@ function openRestInfoPage() {
 }
 
 function reviewMaping(restaurant, review){
+    $('.targetUrl').attr('content', 'http://restplay.pluseq.com/review/' + review["_id"]["$oid"]);
     $('.restName').text(restaurant["name"]);
     $('#rateCuisine').text(review["cuisine"] + "/5");
     $('#rateInterior').text(review["interior"] + "/5");
