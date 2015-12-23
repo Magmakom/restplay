@@ -198,7 +198,6 @@ function openRestInfoPage() {
 function reviewMaping(restaurant, review){
     $('.targetUrl').attr('content', 'http://restplay.pluseq.com/review/' + review["_id"]["$oid"]);
     $("meta[property='og\\:url']").attr("content", 'http://restplay.pluseq.com/review/' + review["_id"]["$oid"]);
-    console.log($("meta[property='og:url']").attr("content"));
     $('.restName').text(restaurant["name"]);
     $('#rateCuisine').text(review["cuisine"] + "/5");
     $('#rateInterior').text(review["interior"] + "/5");
@@ -223,6 +222,68 @@ function reviewMaping(restaurant, review){
         var h=d[g]('body')[0];
         h.appendChild(s);
     }
+    $('.slide').remove();
+    targetUrl = '/gallery/' + restaurant["_id"];
+    $.ajax({
+        type: "GET",
+        url: targetUrl,
+        success: function (data) {
+            photos = data;
+            if (photos !== undefined && photos!==null) {
+                for (i = 0; i < photos.length; i++) {
+                    $('.slider').append(
+                        '<div data-p="112.50" class="slide" id="slide-' + i + '" style="display: none;"></div>'
+                    );
+                    $('#slide-' + i).append(
+                        '<img data-u="image" src="/photo/' + photos[i]["_id"] + '?inline=true" />'
+                    );
+                }
+                $(document).ready(function ($) {
+                    var jssor_1_SlideshowTransitions = [
+                        {$Duration:1200,$Opacity:2}
+                    ];
+
+                    var jssor_1_options = {
+                        $AutoPlay: true,
+                        $SlideshowOptions: {
+                            $Class: $JssorSlideshowRunner$,
+                            $Transitions: jssor_1_SlideshowTransitions,
+                            $TransitionsOrder: 1
+                        },
+                        $ArrowNavigatorOptions: {
+                            $Class: $JssorArrowNavigator$
+                        },
+                        $BulletNavigatorOptions: {
+                            $Class: $JssorBulletNavigator$
+                        }
+                    };
+
+                    var jssor_1_slider = new $JssorSlider$("jssor_1", jssor_1_options);
+
+                    //responsive code begin
+                    //you can remove responsive code if you don't want the slider scales while window resizes
+                    function ScaleSlider() {
+                        var refSize = jssor_1_slider.$Elmt.parentNode.clientWidth;
+                        if (refSize) {
+                            refSize = Math.min(refSize, 800);
+                            jssor_1_slider.$ScaleWidth(refSize);
+                        }
+                        else {
+                            window.setTimeout(ScaleSlider, 30);
+                        }
+                    }
+                    ScaleSlider();
+                    $(window).bind("load", ScaleSlider);
+                    $(window).bind("resize", ScaleSlider);
+                    $(window).bind("orientationchange", ScaleSlider);
+                    //responsive code end
+                });
+            }
+        },
+        error: function () {
+            alert('Can not connect to the server');
+        }
+    });
 }
 
 function setUrl(title, newUrl){
